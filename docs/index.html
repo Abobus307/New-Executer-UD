@@ -235,7 +235,6 @@
             80%, 100% { content: ''; }
         }
 
-        /* Стили для скроллбара */
         .result-area::-webkit-scrollbar {
             width: 8px;
         }
@@ -270,9 +269,7 @@
             <div class="input-section">
                 <div class="input-group">
                     <label class="input-label">Website URL:</label>
-                    <input type="url" class="url-input" id="urlInput" 
-                           placeholder="https://example.com" 
-                           autocomplete="off">
+                    <input type="url" class="url-input" id="urlInput" placeholder="https://example.com" autocomplete="off">
                 </div>
 
                 <div class="proxy-section">
@@ -286,9 +283,7 @@
                     </select>
                 </div>
 
-                <button class="btn" onclick="parseContent()">
-                    🚀 EXTRACT CONTENT
-                </button>
+                <button class="btn" onclick="parseContent()">🚀 EXTRACT CONTENT</button>
 
                 <div class="stats">
                     <div class="stat-item">
@@ -308,9 +303,7 @@
 
             <div class="output-section">
                 <label class="input-label">Extracted Content:</label>
-                <div class="result-area" id="resultArea">
-Enter a URL and click "Extract Content" to get started...
-                </div>
+                <div class="result-area" id="resultArea">Enter a URL and click "Extract Content" to get started...</div>
             </div>
         </div>
 
@@ -343,7 +336,6 @@ Enter a URL and click "Extract Content" to get started...
     </div>
 
     <script>
-        // Элементы DOM
         const urlInput = document.getElementById('urlInput');
         const resultArea = document.getElementById('resultArea');
         const charCount = document.getElementById('charCount');
@@ -351,7 +343,6 @@ Enter a URL and click "Extract Content" to get started...
         const proxyUsed = document.getElementById('proxyUsed');
         const proxySelect = document.getElementById('proxySelect');
 
-        // Прокси серверы
         const proxies = {
             corsproxy: (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
             allorigins: (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
@@ -360,19 +351,16 @@ Enter a URL and click "Extract Content" to get started...
             direct: (url) => url
         };
 
-        // Обновление счетчика символов
         urlInput.addEventListener('input', function() {
             charCount.textContent = this.value.length;
         });
 
-        // Обработка Enter
         urlInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 parseContent();
             }
         });
 
-        // Основная функция парсинга
         async function parseContent() {
             const url = urlInput.value.trim();
             const selectedProxy = proxySelect.value;
@@ -382,7 +370,6 @@ Enter a URL and click "Extract Content" to get started...
                 return;
             }
 
-            // Валидация URL
             if (!isValidUrl(url)) {
                 showResult('❌ Please enter a valid URL (include http:// or https://)', 'error');
                 return;
@@ -398,7 +385,6 @@ Enter a URL and click "Extract Content" to get started...
                 console.log(`Using proxy: ${selectedProxy}`);
                 console.log(`Target URL: ${proxyUrl}`);
 
-                // Таймаут 25 секунд
                 const controller = new AbortController();
                 const timeoutId = setTimeout(() => controller.abort(), 25000);
 
@@ -418,7 +404,6 @@ Enter a URL and click "Extract Content" to get started...
 
                 let content;
                 
-                // Обработка разных форматов ответов прокси
                 if (selectedProxy === 'whatever') {
                     const data = await response.json();
                     content = data.contents;
@@ -430,14 +415,12 @@ Enter a URL and click "Extract Content" to get started...
                     throw new Error('No content received from the server');
                 }
 
-                // Извлечение текстового контента
                 const extractedText = extractTextContent(content);
                 
                 if (!extractedText) {
                     throw new Error('No readable text content found');
                 }
 
-                // Форматирование результата
                 const result = formatResult(url, selectedProxy, extractedText);
                 showResult(result, 'success');
                 status.textContent = 'Success';
@@ -449,7 +432,6 @@ Enter a URL and click "Extract Content" to get started...
             }
         }
 
-        // Валидация URL
         function isValidUrl(string) {
             try {
                 new URL(string);
@@ -459,20 +441,16 @@ Enter a URL and click "Extract Content" to get started...
             }
         }
 
-        // Извлечение текста из HTML
         function extractTextContent(html) {
             try {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
                 
-                // Удаляем ненужные элементы
                 const unwanted = doc.querySelectorAll('script, style, nav, header, footer, iframe, link, meta, noscript');
                 unwanted.forEach(element => element.remove());
                 
-                // Получаем текстовый контент
                 let text = doc.body.textContent || html;
                 
-                // Очистка текста
                 text = text
                     .replace(/\s+/g, ' ')
                     .replace(/\n\s*\n/g, '\n')
@@ -486,7 +464,6 @@ Enter a URL and click "Extract Content" to get started...
             }
         }
 
-        // Форматирование результата
         function formatResult(url, proxy, content) {
             const maxLength = 20000;
             const isTruncated = content.length > maxLength;
@@ -506,18 +483,15 @@ Enter a URL and click "Extract Content" to get started...
             return result;
         }
 
-        // Отображение результата
         function showResult(message, type) {
             resultArea.textContent = message;
             resultArea.className = `result-area ${type}`;
         }
 
-        // Автофокус при загрузке
         window.addEventListener('load', function() {
             urlInput.focus();
         });
 
-        // Демонстрационный URL
         urlInput.value = 'https://example.com';
         charCount.textContent = urlInput.value.length;
     </script>
