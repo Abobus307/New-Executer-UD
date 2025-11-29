@@ -1023,6 +1023,51 @@
             justify-content: center;
             gap: 10px;
         }
+
+        .manual-update-section {
+            background: rgba(40, 20, 40, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .manual-update-section h3 {
+            color: #b28cff;
+            margin-bottom: 15px;
+        }
+
+        .status-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .status-select {
+            background: rgba(30, 10, 10, 0.6);
+            color: #e0e0e0;
+            border: 1px solid rgba(80, 40, 80, 0.4);
+            border-radius: 8px;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        .update-button {
+            background: rgba(111, 66, 193, 0.6);
+            color: #e0e0e0;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(111, 66, 193, 0.4);
+        }
+
+        .update-button:hover {
+            background: rgba(111, 66, 193, 0.8);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -1237,15 +1282,62 @@
                 
                 <div class="status-check-notice">
                     <h3>🔍 Status Information</h3>
-                    <p>Statuses are now automatically updated via the WEAO API for accurate and current executor statuses.</p>
+                    <p>Due to CORS restrictions, we cannot fetch live status from WEAO API. Please check <strong>weao.xyz</strong> directly for the most current statuses.</p>
                     <div style="display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 15px;">
-                        <div class="loading-status" id="loadingIndicator"></div>
-                        <span id="apiStatus">Fetching latest status from WEAO API...</span>
+                        <div class="loading-status" id="loadingIndicator" style="display: none;"></div>
+                        <span id="apiStatus">Using fallback status data</span>
                     </div>
-                    <div id="apiErrorContainer" style="display: none;"></div>
-                    <a href="https://weao.xyz/" class="status-check-link" target="_blank">
-                        📊 Visit weao.xyz for more information
-                    </a>
+                    <div id="apiErrorContainer">
+                        <div class="api-error">
+                            <h3>⚠️ API Connection Issue</h3>
+                            <p>Unable to connect to WEAO API due to CORS restrictions. Showing cached status data.</p>
+                            <a href="https://weao.xyz/" class="status-check-link" target="_blank">
+                                📊 Check live statuses on weao.xyz
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="manual-update-section">
+                    <h3>🔄 Manual Status Update</h3>
+                    <p>If you know the current status of an executor, you can update it manually:</p>
+                    <div class="status-input-group">
+                        <select id="executorSelect" class="status-select">
+                            <option value="">Select Executor</option>
+                            <option value="Volcano">Volcano</option>
+                            <option value="Velocity">Velocity</option>
+                            <option value="Wave">Wave</option>
+                            <option value="Volt">Volt</option>
+                            <option value="Seliware">Seliware</option>
+                            <option value="Swift">Swift</option>
+                            <option value="Valex">Valex</option>
+                            <option value="Potassium">Potassium</option>
+                            <option value="Bunni.lol">Bunni.lol</option>
+                            <option value="Sirhurt">Sirhurt</option>
+                            <option value="Hydrogen">Hydrogen</option>
+                            <option value="Macsploit">Macsploit</option>
+                            <option value="Codex">Codex</option>
+                            <option value="Cryptic">Cryptic</option>
+                            <option value="Cryptic-Android">Cryptic Android</option>
+                            <option value="Delta">Delta</option>
+                            <option value="Delta-iOS">Delta iOS</option>
+                            <option value="ChocoSploit">ChocoSploit</option>
+                        </select>
+                        <select id="updateStatusSelect" class="status-select">
+                            <option value="Updated">Updated</option>
+                            <option value="Not Updated">Not Updated</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                        <select id="detectStatusSelect" class="status-select">
+                            <option value="Undetected">Undetected</option>
+                            <option value="Detected">Detected</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                        <button class="update-button" onclick="updateManualStatus()">Update Status</button>
+                    </div>
+                    <p style="font-size: 0.8rem; opacity: 0.7; margin-top: 10px;">
+                        Note: Manual updates are saved in your browser only and will reset when you clear cache.
+                    </p>
                 </div>
                 
                 <div class="platform-tabs">
@@ -1439,10 +1531,10 @@
                             <div class="changelog-date">2024</div>
                         </div>
                         <div class="changelog-description">
-                            Integrated WEAO API for automatic executor status updates
+                            Added manual status update feature for executors
                         </div>
                         <div class="changelog-details">
-                            Executor statuses are now automatically fetched from the WEAO API for real-time updates.
+                            Users can now manually update executor statuses when WEAO API is unavailable due to CORS restrictions.
                         </div>
                     </div>
                     
@@ -1579,42 +1671,8 @@
             }
         };
 
-        // ==================== WEAO API INTEGRATION ====================
-        // Try multiple WEAO API endpoints
-        const WEAO_API_ENDPOINTS = [
-            'https://weao.xyz/api/exploits',
-            'https://api.weao.xyz/exploits',
-            'http://api.weao.xyz/exploits'
-        ];
-
-        const API_HEADERS = {
-            'User-Agent': 'WEAO-3PService',
-            'Content-Type': 'application/json'
-        };
-
-        // Executor name mapping between our names and WEAO API names
-        const executorNameMapping = {
-            "Volcano": "Volcano",
-            "Velocity": "Velocity", 
-            "Wave": "Wave",
-            "Volt": "Volt",
-            "Seliware": "Seliware",
-            "Swift": "Swift",
-            "Valex": "Valex",
-            "Potassium": "Potassium",
-            "Bunni.lol": "Bunni",
-            "Sirhurt": "SirHurt",
-            "Hydrogen": "Hydrogen",
-            "Macsploit": "MacSploit",
-            "Codex": "Codex",
-            "Cryptic": "Cryptic",
-            "Cryptic-Android": "Cryptic",
-            "Delta": "Delta",
-            "Delta-iOS": "Delta",
-            "ChocoSploit": "ChocoSploit"
-        };
-
-        // Fallback status data in case API fails
+        // ==================== STATUS MANAGEMENT ====================
+        // Fallback status data
         const fallbackStatusData = {
             "Volcano": { updated: false, detected: false },
             "Velocity": { updated: false, detected: false },
@@ -1636,160 +1694,74 @@
             "ChocoSploit": { updated: false, detected: false }
         };
 
-        // Global status objects that will be populated by WEAO API
+        // Global status objects
         let UpdateStatus = {};
         let DetectStatus = {};
-        let currentApiEndpoint = '';
 
-        // Function to fetch status from WEAO API with fallback
-        async function fetchWEAOStatus() {
-            const apiStatusElement = document.getElementById('apiStatus');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const apiErrorContainer = document.getElementById('apiErrorContainer');
+        // Load statuses from localStorage or use fallback
+        function loadStatuses() {
+            const savedUpdateStatus = localStorage.getItem('cpsUpdateStatus');
+            const savedDetectStatus = localStorage.getItem('cpsDetectStatus');
             
-            if (apiStatusElement) {
-                apiStatusElement.textContent = 'Fetching latest status from WEAO API...';
-            }
-            
-            // Hide error container initially
-            if (apiErrorContainer) {
-                apiErrorContainer.style.display = 'none';
-            }
-
-            // Try each endpoint until one works
-            for (const endpoint of WEAO_API_ENDPOINTS) {
-                try {
-                    console.log(`Trying WEAO API endpoint: ${endpoint}`);
-                    
-                    const response = await fetch(endpoint, {
-                        method: 'GET',
-                        headers: API_HEADERS,
-                        mode: 'cors'
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
+            if (savedUpdateStatus && savedDetectStatus) {
+                UpdateStatus = JSON.parse(savedUpdateStatus);
+                DetectStatus = JSON.parse(savedDetectStatus);
+                
+                // Fill in any missing executors with fallback data
+                Object.keys(fallbackStatusData).forEach(executor => {
+                    if (!UpdateStatus[executor]) {
+                        UpdateStatus[executor] = fallbackStatusData[executor].updated ? 'Updated' : 'Not Updated';
                     }
-
-                    const data = await response.json();
-                    
-                    currentApiEndpoint = endpoint;
-                    
-                    if (apiStatusElement) {
-                        apiStatusElement.textContent = 'Status updated successfully from WEAO API';
-                        setTimeout(() => {
-                            apiStatusElement.textContent = 'Status automatically updates every 10 minutes';
-                        }, 3000);
-                    }
-                    
-                    // Hide loading indicator on success
-                    if (loadingIndicator) {
-                        loadingIndicator.style.display = 'none';
-                    }
-
-                    return data;
-                } catch (error) {
-                    console.warn(`Failed to fetch from ${endpoint}:`, error);
-                    continue; // Try next endpoint
-                }
-            }
-
-            // If all endpoints fail, use fallback data
-            console.warn('All WEAO API endpoints failed. Using fallback data.');
-            
-            if (apiStatusElement) {
-                apiStatusElement.textContent = 'Using fallback data (API unavailable)';
-            }
-            
-            if (loadingIndicator) {
-                loadingIndicator.style.display = 'none';
-            }
-            
-            // Show error message
-            if (apiErrorContainer) {
-                apiErrorContainer.innerHTML = `
-                    <div class="api-error">
-                        <h3>⚠️ API Connection Issue</h3>
-                        <p>Unable to connect to WEAO API. Showing cached status data. Status may not be current.</p>
-                        <button class="status-check-link" onclick="retryWEAOStatus()" style="cursor: pointer; margin-top: 10px;">
-                            🔄 Retry Connection
-                        </button>
-                    </div>
-                `;
-                apiErrorContainer.style.display = 'block';
-            }
-
-            return null; // Return null to indicate we're using fallback
-        }
-
-        // Function to process WEAO API data and update our status objects
-        function processWEAOData(weaoData) {
-            // Reset status objects
-            UpdateStatus = {};
-            DetectStatus = {};
-
-            if (weaoData && Array.isArray(weaoData)) {
-                // Process each executor from our mapping using API data
-                Object.entries(executorNameMapping).forEach(([ourName, weaoName]) => {
-                    const executorData = weaoData.find(exp => 
-                        exp.name && exp.name.toLowerCase() === weaoName.toLowerCase()
-                    );
-                    
-                    if (executorData) {
-                        // Convert WEAO API data to our format
-                        UpdateStatus[ourName] = executorData.updated ? 'Updated' : 'Not Updated';
-                        DetectStatus[ourName] = executorData.detected ? 'Detected' : 'Undetected';
-                    } else {
-                        // If executor not found in API, use fallback
-                        UpdateStatus[ourName] = fallbackStatusData[ourName]?.updated ? 'Updated' : 'Not Updated';
-                        DetectStatus[ourName] = fallbackStatusData[ourName]?.detected ? 'Detected' : 'Undetected';
+                    if (!DetectStatus[executor]) {
+                        DetectStatus[executor] = fallbackStatusData[executor].detected ? 'Detected' : 'Undetected';
                     }
                 });
             } else {
-                // Use fallback data if API failed
+                // Initialize with fallback data
                 Object.entries(fallbackStatusData).forEach(([executorName, status]) => {
                     UpdateStatus[executorName] = status.updated ? 'Updated' : 'Not Updated';
                     DetectStatus[executorName] = status.detected ? 'Detected' : 'Undetected';
                 });
+                saveStatuses();
             }
-
-            // Update the UI with new statuses
+            
             updateStatusIndicators();
         }
 
-        // Function to initialize and periodically update statuses
-        async function initializeWEAOStatus() {
-            // Initial fetch
-            const weaoData = await fetchWEAOStatus();
-            processWEAOData(weaoData);
-
-            // Set up periodic updates (every 10 minutes)
-            setInterval(async () => {
-                const weaoData = await fetchWEAOStatus();
-                processWEAOData(weaoData);
-            }, 10 * 60 * 1000); // 10 minutes
+        // Save statuses to localStorage
+        function saveStatuses() {
+            localStorage.setItem('cpsUpdateStatus', JSON.stringify(UpdateStatus));
+            localStorage.setItem('cpsDetectStatus', JSON.stringify(DetectStatus));
         }
 
-        // Function to retry API connection
-        async function retryWEAOStatus() {
-            const apiStatusElement = document.getElementById('apiStatus');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const apiErrorContainer = document.getElementById('apiErrorContainer');
+        // Manual status update function
+        function updateManualStatus() {
+            const executorSelect = document.getElementById('executorSelect');
+            const updateStatusSelect = document.getElementById('updateStatusSelect');
+            const detectStatusSelect = document.getElementById('detectStatusSelect');
             
-            if (apiStatusElement) {
-                apiStatusElement.textContent = 'Retrying connection to WEAO API...';
+            const executor = executorSelect.value;
+            const updateStatus = updateStatusSelect.value;
+            const detectStatus = detectStatusSelect.value;
+            
+            if (!executor) {
+                alert('Please select an executor');
+                return;
             }
             
-            if (loadingIndicator) {
-                loadingIndicator.style.display = 'inline-block';
-            }
+            UpdateStatus[executor] = updateStatus;
+            DetectStatus[executor] = detectStatus;
             
-            if (apiErrorContainer) {
-                apiErrorContainer.style.display = 'none';
-            }
+            saveStatuses();
+            updateStatusIndicators();
             
-            const weaoData = await fetchWEAOStatus();
-            processWEAOData(weaoData);
+            // Show success message
+            alert(`Status updated for ${executor}`);
+            
+            // Reset selects
+            executorSelect.value = '';
+            updateStatusSelect.value = 'Updated';
+            detectStatusSelect.value = 'Undetected';
         }
 
         // ==================== STATUS INDICATORS ====================
@@ -1966,7 +1938,6 @@
             
             const updateStatus = UpdateStatus[executerName] || 'Unknown';
             const detectStatus = DetectStatus[executerName] || 'Unknown';
-            const apiSource = currentApiEndpoint ? 'WEAO API' : 'Fallback Data';
             
             modalContent.innerHTML = `
                 <div class="executer-details">
@@ -1992,7 +1963,7 @@
                     </div>
                     <div class="detail-row">
                         <span class="detail-label">Data Source:</span>
-                        <span class="detail-value">${apiSource}</span>
+                        <span class="detail-value">Local Storage</span>
                     </div>
                 </div>
                 
@@ -2000,14 +1971,14 @@
                 
                 <div class="status-check-notice" style="margin-top: 20px;">
                     <h3>🔍 Status Information</h3>
-                    <p>Statuses are automatically updated via the WEAO API. Last updated: <span id="lastUpdatedTime">Just now</span></p>
-                    <button class="status-check-link" onclick="refreshWEAOStatus()" style="cursor: pointer;">
-                        🔄 Refresh Status Now
-                    </button>
+                    <p>Statuses are stored locally in your browser. Last updated: <span id="lastUpdatedTime">Just now</span></p>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">
+                        You can manually update statuses using the form on the main page.
+                    </p>
                 </div>
                 
                 <p style="margin-top: 20px; opacity: 0.8; font-size: 0.9rem; color: #c0c0c0;">
-                    Status information provided by ${apiSource}. ${currentApiEndpoint ? 'Updates automatically every 10 minutes.' : 'API currently unavailable. Showing cached data.'}
+                    For the most current status, always check the official website or weao.xyz.
                 </p>
             `;
             
@@ -2023,17 +1994,6 @@
             }, 10);
         }
 
-        async function refreshWEAOStatus() {
-            const weaoData = await fetchWEAOStatus();
-            processWEAOData(weaoData);
-            
-            // Update the last updated time in the modal if it's open
-            const lastUpdatedElement = document.getElementById('lastUpdatedTime');
-            if (lastUpdatedElement) {
-                lastUpdatedElement.textContent = new Date().toLocaleTimeString();
-            }
-        }
-
         function closeExecuterModal() {
             const modal = document.getElementById('executerModal');
             
@@ -2045,8 +2005,8 @@
 
         // ==================== EVENT LISTENERS ====================
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize WEAO API status
-            initializeWEAOStatus();
+            // Load statuses from localStorage
+            loadStatuses();
 
             // Tab functionality
             document.querySelectorAll('.tab-button').forEach(button => {
