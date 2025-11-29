@@ -1701,217 +1701,255 @@
         };
 
         // ==================== WEAO PROXY API INTEGRATION ====================
-        const PROXY_BASE_URL = 'http://217.154.212.188:9290';
-        const PROXY_API_URL = `${PROXY_BASE_URL}/api/status/exploits`;
+        const PROXY_BASE_URL = 'https://corsproxy.io/?http://217.154.212.188:9290';
+const PROXY_API_URL = `${PROXY_BASE_URL}/api/status/exploits`;
 
-        const executorNameMapping = {
-            "Volcano": "volcano",
-            "Velocity": "velocity", 
-            "Wave": "wave",
-            "Volt": "volt",
-            "Seliware": "seliware",
-            "Swift": "swift",
-            "Valex": "valex",
-            "Potassium": "potassium",
-            "Bunni.lol": "bunni",
-            "Sirhurt": "sirhurt",
-            "Hydrogen": "hydrogen",
-            "Macsploit": "macsploit",
-            "Codex": "codex",
-            "Cryptic": "cryptic",
-            "Cryptic-Android": "cryptic",
-            "Delta": "delta",
-            "Delta-iOS": "delta",
-            "ChocoSploit": "chocosploit"
-        };
+const executorNameMapping = {
+    "Volcano": "volcano",
+    "Velocity": "velocity", 
+    "Wave": "wave",
+    "Volt": "volt",
+    "Seliware": "seliware",
+    "Swift": "swift",
+    "Valex": "valex",
+    "Potassium": "potassium",
+    "Bunni.lol": "bunni",
+    "Sirhurt": "sirhurt",
+    "Hydrogen": "hydrogen",
+    "Macsploit": "macsploit",
+    "Codex": "codex",
+    "Cryptic": "cryptic",
+    "Cryptic-Android": "cryptic",
+    "Delta": "delta",
+    "Delta-iOS": "delta",
+    "ChocoSploit": "chocosploit"
+};
 
-        // Fallback status data
-        const fallbackStatusData = {
-            "Volcano": { updated: false, detected: false },
-            "Velocity": { updated: false, detected: false },
-            "Wave": { updated: true, detected: false },
-            "Volt": { updated: true, detected: false },
-            "Seliware": { updated: true, detected: false },
-            "Swift": { updated: false, detected: true },
-            "Valex": { updated: true, detected: true },
-            "Potassium": { updated: true, detected: false },
-            "Bunni.lol": { updated: true, detected: false },
-            "Sirhurt": { updated: true, detected: false },
-            "Hydrogen": { updated: false, detected: false },
-            "Macsploit": { updated: true, detected: false },
-            "Codex": { updated: true, detected: false },
-            "Cryptic": { updated: false, detected: false },
-            "Cryptic-Android": { updated: true, detected: false },
-            "Delta": { updated: true, detected: false },
-            "Delta-iOS": { updated: true, detected: false },
-            "ChocoSploit": { updated: false, detected: false }
-        };
+// Fallback status data
+const fallbackStatusData = {
+    "Volcano": { updated: false, detected: false },
+    "Velocity": { updated: false, detected: false },
+    "Wave": { updated: true, detected: false },
+    "Volt": { updated: true, detected: false },
+    "Seliware": { updated: true, detected: false },
+    "Swift": { updated: false, detected: true },
+    "Valex": { updated: true, detected: true },
+    "Potassium": { updated: true, detected: false },
+    "Bunni.lol": { updated: true, detected: false },
+    "Sirhurt": { updated: true, detected: false },
+    "Hydrogen": { updated: false, detected: false },
+    "Macsploit": { updated: true, detected: false },
+    "Codex": { updated: true, detected: false },
+    "Cryptic": { updated: false, detected: false },
+    "Cryptic-Android": { updated: true, detected: false },
+    "Delta": { updated: true, detected: false },
+    "Delta-iOS": { updated: true, detected: false },
+    "ChocoSploit": { updated: false, detected: false }
+};
 
-        // Global status objects
-        let UpdateStatus = {};
-        let DetectStatus = {};
+// Global status objects
+let UpdateStatus = {};
+let DetectStatus = {};
 
-        // Load statuses from localStorage or use fallback
-        function loadStatuses() {
-            const savedUpdateStatus = localStorage.getItem('cpsUpdateStatus');
-            const savedDetectStatus = localStorage.getItem('cpsDetectStatus');
-            
-            if (savedUpdateStatus && savedDetectStatus) {
-                UpdateStatus = JSON.parse(savedUpdateStatus);
-                DetectStatus = JSON.parse(savedDetectStatus);
-                
-                // Fill in any missing executors with fallback data
-                Object.keys(fallbackStatusData).forEach(executor => {
-                    if (!UpdateStatus[executor]) {
-                        UpdateStatus[executor] = fallbackStatusData[executor].updated ? 'Updated' : 'Not Updated';
-                    }
-                    if (!DetectStatus[executor]) {
-                        DetectStatus[executor] = fallbackStatusData[executor].detected ? 'Detected' : 'Undetected';
-                    }
-                });
-            } else {
-                // Initialize with fallback data
-                Object.entries(fallbackStatusData).forEach(([executorName, status]) => {
-                    UpdateStatus[executorName] = status.updated ? 'Updated' : 'Not Updated';
-                    DetectStatus[executorName] = status.detected ? 'Detected' : 'Undetected';
-                });
-                saveStatuses();
+// Load statuses from localStorage or use fallback
+function loadStatuses() {
+    const savedUpdateStatus = localStorage.getItem('cpsUpdateStatus');
+    const savedDetectStatus = localStorage.getItem('cpsDetectStatus');
+    
+    if (savedUpdateStatus && savedDetectStatus) {
+        UpdateStatus = JSON.parse(savedUpdateStatus);
+        DetectStatus = JSON.parse(savedDetectStatus);
+        
+        // Fill in any missing executors with fallback data
+        Object.keys(fallbackStatusData).forEach(executor => {
+            if (!UpdateStatus[executor]) {
+                UpdateStatus[executor] = fallbackStatusData[executor].updated ? 'Updated' : 'Not Updated';
             }
-            
-            updateStatusIndicators();
+            if (!DetectStatus[executor]) {
+                DetectStatus[executor] = fallbackStatusData[executor].detected ? 'Detected' : 'Undetected';
+            }
+        });
+    } else {
+        // Initialize with fallback data
+        Object.entries(fallbackStatusData).forEach(([executorName, status]) => {
+            UpdateStatus[executorName] = status.updated ? 'Updated' : 'Not Updated';
+            DetectStatus[executorName] = status.detected ? 'Detected' : 'Undetected';
+        });
+        saveStatuses();
+    }
+    
+    updateStatusIndicators();
+}
+
+// Save statuses to localStorage
+function saveStatuses() {
+    localStorage.setItem('cpsUpdateStatus', JSON.stringify(UpdateStatus));
+    localStorage.setItem('cpsDetectStatus', JSON.stringify(DetectStatus));
+}
+
+// Fetch status from proxy
+async function fetchWEAOStatus() {
+    const apiStatusElement = document.getElementById('apiStatus');
+    const loadingIndicator = document.getElementById('loadingIndicator');
+    const apiErrorContainer = document.getElementById('apiErrorContainer');
+    const proxyStatus = document.getElementById('proxyStatus');
+    
+    if (apiStatusElement) {
+        apiStatusElement.textContent = 'Fetching status via CORS proxy...';
+    }
+    if (loadingIndicator) {
+        loadingIndicator.style.display = 'inline-block';
+    }
+    if (apiErrorContainer) {
+        apiErrorContainer.style.display = 'none';
+    }
+    if (proxyStatus) {
+        proxyStatus.className = 'proxy-status';
+    }
+
+    try {
+        console.log('Fetching from:', PROXY_API_URL);
+        const response = await fetch(PROXY_API_URL, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            mode: 'cors'
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Save statuses to localStorage
-        function saveStatuses() {
-            localStorage.setItem('cpsUpdateStatus', JSON.stringify(UpdateStatus));
-            localStorage.setItem('cpsDetectStatus', JSON.stringify(DetectStatus));
+        const data = await response.json();
+        
+        if (apiStatusElement) {
+            apiStatusElement.textContent = '✅ Connected via CORS Proxy';
+            apiStatusElement.style.color = '#6bff8d';
+        }
+        
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
         }
 
-        // Fetch status from proxy
-        async function fetchWEAOStatus() {
-            const apiStatusElement = document.getElementById('apiStatus');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const apiErrorContainer = document.getElementById('apiErrorContainer');
-            const proxyStatus = document.getElementById('proxyStatus');
-            
-            if (apiStatusElement) {
-                apiStatusElement.textContent = 'Fetching status from WispByte Proxy...';
-            }
-            if (loadingIndicator) {
-                loadingIndicator.style.display = 'inline-block';
-            }
-            if (apiErrorContainer) {
-                apiErrorContainer.style.display = 'none';
-            }
-            if (proxyStatus) {
-                proxyStatus.className = 'proxy-status';
-            }
-
-            try {
-                const response = await fetch(PROXY_API_URL, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                
-                if (apiStatusElement) {
-                    apiStatusElement.textContent = '✅ Connected to WispByte Proxy';
-                    apiStatusElement.style.color = '#6bff8d';
-                }
-                
-                if (loadingIndicator) {
-                    loadingIndicator.style.display = 'none';
-                }
-
-                if (proxyStatus) {
-                    proxyStatus.className = 'proxy-status connected';
-                }
-
-                return data;
-            } catch (error) {
-                console.error('Error fetching from proxy:', error);
-                
-                if (apiStatusElement) {
-                    apiStatusElement.textContent = '❌ Proxy connection failed';
-                    apiStatusElement.style.color = '#ff6b7a';
-                }
-                if (loadingIndicator) {
-                    loadingIndicator.style.display = 'none';
-                }
-                
-                if (proxyStatus) {
-                    proxyStatus.className = 'proxy-status error';
-                }
-                
-                // Show error
-                if (apiErrorContainer) {
-                    apiErrorContainer.innerHTML = `
-                        <div class="api-error">
-                            <h3>⚠️ Proxy Connection Error</h3>
-                            <p>Unable to connect to WispByte Proxy. Showing cached status data.</p>
-                            <p><strong>Error:</strong> ${error.message}</p>
-                            <p><strong>URL:</strong> ${PROXY_API_URL}</p>
-                            <button class="status-check-link" onclick="retryProxyConnection()" style="cursor: pointer; margin-top: 10px;">
-                                🔄 Retry Connection
-                            </button>
-                        </div>
-                    `;
-                    apiErrorContainer.style.display = 'block';
-                }
-                
-                return null;
-            }
+        if (proxyStatus) {
+            proxyStatus.className = 'proxy-status connected';
         }
 
-        // Process proxy data
-        function processProxyData(proxyData) {
-            if (!proxyData) return;
-
-            UpdateStatus = {};
-            DetectStatus = {};
-
-            Object.entries(executorNameMapping).forEach(([ourName, apiName]) => {
-                const executorData = proxyData.find(exp => 
-                    exp.name && exp.name.toLowerCase() === apiName.toLowerCase()
-                );
-                
-                if (executorData) {
-                    UpdateStatus[ourName] = executorData.updated ? 'Updated' : 'Not Updated';
-                    DetectStatus[ourName] = executorData.detected ? 'Detected' : 'Undetected';
-                } else {
-                    UpdateStatus[ourName] = 'Unknown';
-                    DetectStatus[ourName] = 'Unknown';
-                }
-            });
-
-            saveStatuses();
-            updateStatusIndicators();
+        return data;
+    } catch (error) {
+        console.error('Error fetching from proxy:', error);
+        
+        if (apiStatusElement) {
+            apiStatusElement.textContent = '❌ CORS Proxy failed';
+            apiStatusElement.style.color = '#ff6b7a';
         }
-
-        // Initialize proxy status
-        async function initializeProxyStatus() {
-            const proxyData = await fetchWEAOStatus();
-            processProxyData(proxyData);
-
-            // Periodic updates every 10 minutes
-            setInterval(async () => {
-                const proxyData = await fetchWEAOStatus();
-                processProxyData(proxyData);
-            }, 10 * 60 * 1000);
+        if (loadingIndicator) {
+            loadingIndicator.style.display = 'none';
         }
-
-        // Retry proxy connection
-        async function retryProxyConnection() {
-            const proxyData = await fetchWEAOStatus();
-            processProxyData(proxyData);
+        
+        if (proxyStatus) {
+            proxyStatus.className = 'proxy-status error';
         }
+        
+        // Show error
+        if (apiErrorContainer) {
+            apiErrorContainer.innerHTML = `
+                <div class="api-error">
+                    <h3>⚠️ CORS Proxy Connection Error</h3>
+                    <p>Unable to connect via CORS proxy. Showing cached status data.</p>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                    <p><strong>Trying URL:</strong> ${PROXY_API_URL}</p>
+                    <div style="margin-top: 15px;">
+                        <button class="status-check-link" onclick="retryProxyConnection()" style="cursor: pointer; margin: 5px;">
+                            🔄 Retry Connection
+                        </button>
+                        <button class="status-check-link" onclick="useFallbackData()" style="cursor: pointer; margin: 5px; background: rgba(111, 66, 193, 0.6);">
+                            📋 Use Fallback Data
+                        </button>
+                    </div>
+                </div>
+            `;
+            apiErrorContainer.style.display = 'block';
+        }
+        
+        return null;
+    }
+}
+
+// Use fallback data
+function useFallbackData() {
+    const apiErrorContainer = document.getElementById('apiErrorContainer');
+    if (apiErrorContainer) {
+        apiErrorContainer.style.display = 'none';
+    }
+    
+    // Initialize with fallback data
+    Object.entries(fallbackStatusData).forEach(([executorName, status]) => {
+        UpdateStatus[executorName] = status.updated ? 'Updated' : 'Not Updated';
+        DetectStatus[executorName] = status.detected ? 'Detected' : 'Undetected';
+    });
+    
+    saveStatuses();
+    updateStatusIndicators();
+    
+    const apiStatusElement = document.getElementById('apiStatus');
+    if (apiStatusElement) {
+        apiStatusElement.textContent = '📋 Using Fallback Data';
+        apiStatusElement.style.color = '#ffd966';
+    }
+}
+
+// Process proxy data
+function processProxyData(proxyData) {
+    if (!proxyData) {
+        useFallbackData();
+        return;
+    }
+
+    UpdateStatus = {};
+    DetectStatus = {};
+
+    Object.entries(executorNameMapping).forEach(([ourName, apiName]) => {
+        const executorData = proxyData.find(exp => 
+            exp.name && exp.name.toLowerCase() === apiName.toLowerCase()
+        );
+        
+        if (executorData) {
+            UpdateStatus[ourName] = executorData.updated ? 'Updated' : 'Not Updated';
+            DetectStatus[ourName] = executorData.detected ? 'Detected' : 'Undetected';
+        } else {
+            UpdateStatus[ourName] = 'Unknown';
+            DetectStatus[ourName] = 'Unknown';
+        }
+    });
+
+    saveStatuses();
+    updateStatusIndicators();
+}
+
+// Initialize proxy status
+async function initializeProxyStatus() {
+    const proxyData = await fetchWEAOStatus();
+    processProxyData(proxyData);
+
+    // Periodic updates every 10 minutes
+    setInterval(async () => {
+        const proxyData = await fetchWEAOStatus();
+        processProxyData(proxyData);
+    }, 10 * 60 * 1000);
+}
+
+// Retry proxy connection
+async function retryProxyConnection() {
+    const apiErrorContainer = document.getElementById('apiErrorContainer');
+    if (apiErrorContainer) {
+        apiErrorContainer.style.display = 'none';
+    }
+    
+    const proxyData = await fetchWEAOStatus();
+    processProxyData(proxyData);
+}
 
         // Manual status update function
         function updateManualStatus() {
