@@ -22,6 +22,16 @@
             position: relative;
         }
 
+        #starfield {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -3;
+            pointer-events: auto;
+        }
+
         #animated-bg {
             position: fixed;
             top: 0;
@@ -32,80 +42,95 @@
             pointer-events: none;
         }
 
-        .glow-effect {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 100vmax;
-            height: 100vmax;
-            background: radial-gradient(circle, rgba(179, 142, 93, 0.1) 0%, transparent 70%);
-            z-index: -1;
-            animation: pulse-glow 8s infinite alternate;
-            pointer-events: none;
-        }
-
-        @keyframes pulse-glow {
-            0% {
-                opacity: 0.3;
-                transform: translate(-50%, -50%) scale(0.8);
-            }
-            100% {
-                opacity: 0.6;
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-        }
-
-        .floating-particle {
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            background: rgba(179, 142, 93, 0.3);
-            border-radius: 50%;
-            z-index: -1;
-            pointer-events: none;
-            animation: float-particle linear infinite;
-        }
-
-        @keyframes float-particle {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(calc(100vw * var(--dx)));
-                opacity: 0;
-            }
-        }
-
-        .grid-effect {
+        .colorful-waves {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: 
-                linear-gradient(rgba(168, 107, 107, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(168, 107, 107, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
             z-index: -1;
             opacity: 0.3;
-            animation: grid-move 20s linear infinite;
             pointer-events: none;
         }
 
-        @keyframes grid-move {
+        .colorful-waves::before,
+        .colorful-waves::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                45deg,
+                rgba(179, 142, 93, 0.1) 0%,
+                rgba(168, 107, 107, 0.1) 25%,
+                rgba(111, 66, 193, 0.1) 50%,
+                rgba(40, 167, 69, 0.1) 75%,
+                rgba(255, 193, 7, 0.1) 100%
+            );
+            animation: wave-move 20s infinite linear;
+        }
+
+        .colorful-waves::after {
+            animation: wave-move-reverse 25s infinite linear;
+            background: linear-gradient(
+                135deg,
+                rgba(220, 53, 69, 0.1) 0%,
+                rgba(23, 162, 184, 0.1) 25%,
+                rgba(111, 66, 193, 0.1) 50%,
+                rgba(179, 142, 93, 0.1) 75%,
+                rgba(168, 107, 107, 0.1) 100%
+            );
+        }
+
+        @keyframes wave-move {
             0% {
-                transform: translate(0, 0);
+                transform: translate(-50%, -50%) rotate(0deg);
             }
             100% {
-                transform: translate(25px, 25px);
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        @keyframes wave-move-reverse {
+            0% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+        }
+
+        .bouncing-shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .bouncing-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--color), transparent 70%);
+            filter: blur(10px);
+            animation: bounce-shape linear infinite;
+        }
+
+        @keyframes bounce-shape {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+            25% {
+                transform: translateY(-100px) translateX(100px) rotate(90deg);
+            }
+            50% {
+                transform: translateY(0) translateX(200px) rotate(180deg);
+            }
+            75% {
+                transform: translateY(100px) translateX(100px) rotate(270deg);
+            }
+            100% {
+                transform: translateY(0) translateX(0) rotate(360deg);
             }
         }
 
@@ -1254,9 +1279,9 @@
     </style>
 </head>
 <body>
-    <canvas id="animated-bg"></canvas>
-    <div class="glow-effect"></div>
-    <div class="grid-effect"></div>
+    <canvas id="starfield"></canvas>
+    <div class="colorful-waves"></div>
+    <div class="bouncing-shapes"></div>
 
     <div class="technical-issues">
         <div class="issues-icon">🔧</div>
@@ -1438,6 +1463,11 @@
                         <div class="script-button" onclick="showScriptModal('PVB Script')">
                             <div class="script-icon">🛡️</div>
                             <div class="script-name">PVB Script</div>
+                        </div>
+                        
+                        <div class="script-button" onclick="showScriptModal('Polsec Script')">
+                            <div class="script-icon">🔐</div>
+                            <div class="script-name">Polsec Script</div>
                         </div>
                         
                         <div class="script-button" onclick="show99NightsModal()">
@@ -1766,136 +1796,41 @@
     </div>
 
     <script>
-        const canvas = document.getElementById('animated-bg');
-        const ctx = canvas.getContext('2d');
-        let particles = [];
-        let mouse = { x: null, y: null, radius: 150 };
+        function createBouncingShapes() {
+            const container = document.querySelector('.bouncing-shapes');
+            const colors = [
+                'rgba(179, 142, 93, 0.3)',
+                'rgba(168, 107, 107, 0.3)',
+                'rgba(111, 66, 193, 0.3)',
+                'rgba(40, 167, 69, 0.3)',
+                'rgba(255, 193, 7, 0.3)',
+                'rgba(23, 162, 184, 0.3)',
+                'rgba(220, 53, 69, 0.3)',
+                'rgba(255, 107, 107, 0.3)'
+            ];
 
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initParticles();
-        }
-
-        function initParticles() {
-            particles = [];
-            const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 10000));
-            
-            for (let i = 0; i < particleCount; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    size: Math.random() * 3 + 1,
-                    speedX: Math.random() * 1 - 0.5,
-                    speedY: Math.random() * 1 - 0.5,
-                    color: `rgba(${Math.random() > 0.5 ? '179, 142, 93' : '168, 107, 107'}, ${Math.random() * 0.3 + 0.2})`
-                });
+            for (let i = 0; i < 15; i++) {
+                const shape = document.createElement('div');
+                shape.className = 'bouncing-shape';
+                
+                const size = Math.random() * 150 + 50;
+                const duration = Math.random() * 30 + 20;
+                const delay = Math.random() * 10;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                shape.style.width = `${size}px`;
+                shape.style.height = `${size}px`;
+                shape.style.left = `${Math.random() * 100}%`;
+                shape.style.top = `${Math.random() * 100}%`;
+                shape.style.animationDuration = `${duration}s`;
+                shape.style.animationDelay = `${delay}s`;
+                shape.style.setProperty('--color', color);
+                
+                container.appendChild(shape);
             }
         }
 
-        function animateParticles() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(particle => {
-                particle.x += particle.speedX;
-                particle.y += particle.speedY;
-                
-                if (particle.x > canvas.width || particle.x < 0) particle.speedX = -particle.speedX;
-                if (particle.y > canvas.height || particle.y < 0) particle.speedY = -particle.speedY;
-                
-                ctx.beginPath();
-                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                ctx.fillStyle = particle.color;
-                ctx.fill();
-                
-                particles.forEach(otherParticle => {
-                    const dx = particle.x - otherParticle.x;
-                    const dy = particle.y - otherParticle.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(179, 142, 93, ${0.1 * (1 - distance/100)})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particle.x, particle.y);
-                        ctx.lineTo(otherParticle.x, otherParticle.y);
-                        ctx.stroke();
-                    }
-                });
-                
-                if (mouse.x !== null && mouse.y !== null) {
-                    const dx = mouse.x - particle.x;
-                    const dy = mouse.y - particle.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < mouse.radius) {
-                        const force = (mouse.radius - distance) / mouse.radius;
-                        const forceX = dx / distance * force * 10;
-                        const forceY = dy / distance * force * 10;
-                        
-                        particle.x -= forceX;
-                        particle.y -= forceY;
-                    }
-                }
-            });
-            
-            requestAnimationFrame(animateParticles);
-        }
-
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
-
-        window.addEventListener('mouseout', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-        animateParticles();
-
-        function createFloatingParticles() {
-            const particleCount = 20;
-            
-            for (let i = 0; i < particleCount; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'floating-particle';
-                
-                const size = Math.random() * 3 + 1;
-                const startX = Math.random() * 100;
-                const duration = Math.random() * 20 + 10;
-                const delay = Math.random() * 5;
-                
-                particle.style.width = `${size}px`;
-                particle.style.height = `${size}px`;
-                particle.style.left = `${startX}vw`;
-                particle.style.bottom = '0';
-                particle.style.opacity = Math.random() * 0.3 + 0.1;
-                particle.style.animationDuration = `${duration}s`;
-                particle.style.animationDelay = `${delay}s`;
-                particle.style.setProperty('--dx', (Math.random() * 2 - 1).toFixed(2));
-                
-                const colors = [
-                    'rgba(179, 142, 93, 0.3)',
-                    'rgba(168, 107, 107, 0.3)',
-                    'rgba(111, 66, 193, 0.2)',
-                    'rgba(40, 167, 69, 0.2)'
-                ];
-                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-                
-                document.body.appendChild(particle);
-                
-                setTimeout(() => {
-                    particle.remove();
-                }, (duration + delay) * 1000);
-            }
-            
-            setTimeout(createFloatingParticles, 2000);
-        }
-
-        createFloatingParticles();
+        createBouncingShapes();
 
         function handleScrollAnimations() {
             const elements = document.querySelectorAll('.slide-in');
@@ -1924,6 +1859,19 @@
         }, 1000);
 
         let technicalIssues = false;
+
+        function checkTechnicalIssues() {
+            if (technicalIssues) {
+                document.querySelector('.technical-issues').classList.add('active');
+                document.querySelector('.main-content').classList.add('hidden');
+            } else {
+                document.querySelector('.technical-issues').classList.remove('active');
+                document.querySelector('.main-content').classList.remove('hidden');
+            }
+        }
+
+        checkTechnicalIssues();
+
         let UpdateStatus = {
             "Volcano": "Updated",
             "Velocity": "Not Updated", 
@@ -1977,6 +1925,10 @@
             },
             "PVB Script": {
                 code: 'loadstring(game:HttpGet("https://gist.githubusercontent.com/aquzeh/86b881d600cd8f7fdd007469e4a45965/raw/pvb"))()',
+                discordLink: 'https://discord.gg/uCq6dNAfRV'
+            },
+            "Polsec Script": {
+                code: 'loadstring(game:HttpGet("https://api.getpolsec.com/scripts/files/8296210a2f042b36145c0db05bd725f73dcf465e2cd54e02ee843c6578a40a91.lua"))()',
                 discordLink: 'https://discord.gg/uCq6dNAfRV'
             },
             "99 Nights Hub": {
@@ -2272,6 +2224,169 @@
                 closeNightsModal();
             }
         }
+
+        // Starfield animation - исправленная версия
+        const canvas = document.getElementById('starfield');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        let stars = [];
+        let particles = [];
+        let mouse = { x: null, y: null };
+
+        // Star class
+        class Star {
+            constructor() {
+                this.reset();
+                this.speed = Math.random() * 2 + 1;
+                this.angle = Math.PI / 4 + (Math.random() - 0.5) * 0.5;
+            }
+            
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -100;
+                this.size = Math.random() * 3 + 1;
+                this.color = `hsl(${Math.random() * 30 + 30}, 100%, ${Math.random() * 30 + 70}%)`;
+                this.speed = Math.random() * 2 + 1;
+            }
+            
+            update() {
+                this.x += Math.cos(this.angle) * this.speed;
+                this.y += Math.sin(this.angle) * this.speed;
+                
+                if (this.y > canvas.height || this.x > canvas.width || this.x < 0) {
+                    this.reset();
+                    this.y = -10;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+            
+            explode() {
+                for (let i = 0; i < 12; i++) {
+                    particles.push(new Particle(this.x, this.y, this.color));
+                }
+                this.reset();
+            }
+        }
+
+        // Particle class for explosion
+        class Particle {
+            constructor(x, y, color) {
+                this.x = x;
+                this.y = y;
+                this.color = color;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = (Math.random() - 0.5) * 8;
+                this.speedY = (Math.random() - 0.5) * 8;
+                this.life = 40;
+            }
+            
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                this.life--;
+                this.size *= 0.95;
+            }
+            
+            draw() {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.life / 40;
+                ctx.fill();
+                ctx.closePath();
+                ctx.restore();
+            }
+        }
+
+        // Create stars
+        for (let i = 0; i < 150; i++) {
+            stars.push(new Star());
+        }
+
+        // Mouse tracking with continuous collision detection
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouse.x = e.clientX - rect.left;
+            mouse.y = e.clientY - rect.top;
+            
+            // Проверка столкновения при движении мыши
+            for (let star of stars) {
+                const dx = mouse.x - star.x;
+                const dy = mouse.y - star.y;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < star.size * 5) {
+                    star.explode();
+                }
+            }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            mouse.x = null;
+            mouse.y = null;
+        });
+
+        // Continuous collision detection in animation loop
+        function checkCollisions() {
+            if (mouse.x !== null && mouse.y !== null) {
+                for (let star of stars) {
+                    const dx = mouse.x - star.x;
+                    const dy = mouse.y - star.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < star.size * 5) {
+                        star.explode();
+                    }
+                }
+            }
+        }
+
+        // Animation loop
+        function animateStars() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Проверка столкновений
+            checkCollisions();
+            
+            // Update and draw stars
+            for (let star of stars) {
+                star.update();
+                star.draw();
+            }
+            
+            // Update and draw particles
+            for (let i = particles.length - 1; i >= 0; i--) {
+                particles[i].update();
+                particles[i].draw();
+                
+                if (particles[i].life <= 0) {
+                    particles.splice(i, 1);
+                }
+            }
+            
+            requestAnimationFrame(animateStars);
+        }
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Start animation
+        animateStars();
     </script>
 </body>
 </html>
