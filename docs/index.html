@@ -1583,11 +1583,11 @@
                                 <div class="status-container" id="status-Cryptic-Android"></div>
                                 <div class="executer-website">getcryptic.net</div>
                             </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Delta-iOS', 'Free (Key System)', 'https://deltaexploits.gg')">
+                            <div class="executer-card" onclick="showExecuterInfo('Delta', 'Free (Key System)', 'https://deltaexploits.gg')">
                                 <div class="executer-icon">Δ</div>
                                 <div class="executer-name">Delta</div>
                                 <div class="executer-price">Free (Key System)</div>
-                                <div class="status-container" id="status-Delta-iOS"></div>
+                                <div class="status-container" id="status-Delta"></div>
                                 <div class="executer-website">deltaexploits.gg</div>
                             </div>
                         </div>
@@ -1596,7 +1596,7 @@
                     <div class="platform-content" id="ios-content">
                         <h3 style="margin-bottom: 20px; color: #b38e5d;">iOS Executers</h3>
                         <div class="executers-grid">
-                            <div class="executer-card" onclick="showExecuterInfo('Delta iOS', 'Free (Key System)', 'https://deltaexploits.gg')">
+                            <div class="executer-card" onclick="showExecuterInfo('Delta-iOS', 'Free (Key System)', 'https://deltaexploits.gg')">
                                 <div class="executer-icon">Δ</div>
                                 <div class="executer-name">Delta</div>
                                 <div class="executer-price">Free (Key System)</div>
@@ -1636,7 +1636,6 @@
                         <div class="changelog-item">
                             <div class="changelog-header">
                                 <div class="changelog-type added">ADDED</div>
-                                <div class="changelog-date">Today</div>
                             </div>
                             <div class="changelog-description">
                                 Added real-time injector status system with weao.xyz API integration
@@ -1811,6 +1810,14 @@
 
         let injectorName = item.name || item.injector || item.title;
 
+        if (injectorName === "Delta") {
+            if (item.platform === "iOS") {
+                injectorName = "Delta-iOS";
+            } else if (item.platform === "Android") {
+                injectorName = "Delta";
+            }
+        }
+        
         if (injectorName === "Cryptic" && item.platform === "Android") {
             injectorName = "Cryptic-Android";
         }
