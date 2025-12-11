@@ -1807,8 +1807,15 @@
     DetectStatus = {};
 
     const handleItem = (item) => {
-        const injectorName = item.name || item.injector || item.title;
-        if (!injectorName || !allowedInjectors.includes(injectorName)) return;
+        if (!item || !item.title) return;
+
+        let injectorName = item.name || item.injector || item.title;
+
+        if (injectorName === "Cryptic" && item.platform === "Android") {
+            injectorName = "Cryptic-Android";
+        }
+
+        if (!allowedInjectors.includes(injectorName)) return;
 
         const updateRaw = item.updateStatus;
         const detectRaw = item.detected;
@@ -1832,11 +1839,11 @@
 
     if (Array.isArray(apiData)) {
         apiData.forEach(handleItem);
-    } else if (typeof apiData === "object" && apiData !== null) {
-        Object.keys(apiData).forEach(key => handleItem(apiData[key]));
+    } else if (apiData && typeof apiData === "object") {
+        Object.values(apiData).forEach(handleItem);
     }
 
-    allowedInjectors.forEach(injectorName => {
+    allowedInjectors.forEach((injectorName) => {
         if (!UpdateStatus[injectorName]) {
             UpdateStatus[injectorName] = "Unknown";
         }
