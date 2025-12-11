@@ -1451,8 +1451,8 @@
                     
                     <div class="api-status-info">
                         <h3>🌐 API Status Information</h3>
-                        <p>Statuses are loaded automatically from <strong>weao.xyz API</strong> in real-time.</p>
-                        <p>Only injectors from our list are displayed. Others are ignored.</p>
+                        <p>Update statuses are loaded automatically from <strong>weao.xyz API</strong> in real-time.</p>
+                        <p>Detection statuses are manually configured and can be edited in the script code.</p>
                         <div class="last-update" id="lastUpdate">Last update: Loading...</div>
                     </div>
                     
@@ -1583,11 +1583,11 @@
                                 <div class="status-container" id="status-Cryptic-Android"></div>
                                 <div class="executer-website">getcryptic.net</div>
                             </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Delta', 'Free (Key System)', 'https://deltaexploits.gg')">
+                            <div class="executer-card" onclick="showExecuterInfo('Delta-iOS', 'Free (Key System)', 'https://deltaexploits.gg')">
                                 <div class="executer-icon">Δ</div>
                                 <div class="executer-name">Delta</div>
                                 <div class="executer-price">Free (Key System)</div>
-                                <div class="status-container" id="status-Delta"></div>
+                                <div class="status-container" id="status-Delta-iOS"></div>
                                 <div class="executer-website">deltaexploits.gg</div>
                             </div>
                         </div>
@@ -1596,7 +1596,7 @@
                     <div class="platform-content" id="ios-content">
                         <h3 style="margin-bottom: 20px; color: #b38e5d;">iOS Executers</h3>
                         <div class="executers-grid">
-                            <div class="executer-card" onclick="showExecuterInfo('Delta-iOS', 'Free (Key System)', 'https://deltaexploits.gg')">
+                            <div class="executer-card" onclick="showExecuterInfo('Delta iOS', 'Free (Key System)', 'https://deltaexploits.gg')">
                                 <div class="executer-icon">Δ</div>
                                 <div class="executer-name">Delta</div>
                                 <div class="executer-price">Free (Key System)</div>
@@ -1641,7 +1641,7 @@
                                 Added real-time injector status system with weao.xyz API integration
                             </div>
                             <div class="changelog-details">
-                                Statuses are now loaded automatically from weao.xyz API. Only injectors from our list are displayed.
+                                Statuses are now loaded automatically from weao.xyz API.
                             </div>
                         </div>
                         
@@ -1766,6 +1766,26 @@
         "ChocoSploit"
     ];
 
+    const manualDetectStatuses = {
+        "Volcano": "Undetected",
+        "Velocity": "Detected",
+        "Wave": "Undetected",
+        "Seliware": "Undetected",
+        "Swift": "Detected",
+        "Valex": "Detected",
+        "Potassium": "Detected",
+        "Bunni.lol": "Undetected",
+        "Sirhurt": "Undetected",
+        "Hydrogen": "Undetected",
+        "Macsploit": "Undetected",
+        "Codex": "Detected",
+        "Cryptic": "Undetected",
+        "Cryptic-Android": "Undetected",
+        "Delta": "Undetected",
+        "Delta-iOS": "Undetected",
+        "ChocoSploit": "Undetected"
+    };
+
     const API_URL = "https://weao-proxy-api.vercel.app/api/status/exploits";
 
     let UpdateStatus = {};
@@ -1793,7 +1813,7 @@
             lastUpdateElement.textContent = `Last update: ${now.toLocaleTimeString()}`;
             lastUpdateElement.style.color = "";
         } catch (error) {
-            console.error("Ошибка при загрузке статусов:", error);
+            console.error("Error loading statuses:", error);
             setDefaultStatuses();
             const lastUpdateElement = document.getElementById("lastUpdate");
             lastUpdateElement.textContent = `Last update: Failed to load - ${new Date().toLocaleTimeString()}`;
@@ -1817,7 +1837,7 @@
                 injectorName = "Delta";
             }
         }
-        
+
         if (injectorName === "Cryptic" && item.platform === "Android") {
             injectorName = "Cryptic-Android";
         }
@@ -1835,13 +1855,7 @@
             UpdateStatus[injectorName] = "Unknown";
         }
 
-        if (typeof detectRaw === "boolean") {
-            DetectStatus[injectorName] = detectRaw ? "Detected" : "Undetected";
-        } else if (typeof item.detectStatus === "string") {
-            DetectStatus[injectorName] = item.detectStatus;
-        } else {
-            DetectStatus[injectorName] = "Unknown";
-        }
+        DetectStatus[injectorName] = "Unknown";
     };
 
     if (Array.isArray(apiData)) {
@@ -1859,6 +1873,12 @@
         }
     });
 
+    for (const [injectorName, detectStatus] of Object.entries(manualDetectStatuses)) {
+        if (allowedInjectors.includes(injectorName)) {
+            DetectStatus[injectorName] = detectStatus;
+        }
+    }
+
     initializeStatuses();
    }
 
@@ -1867,6 +1887,13 @@
             UpdateStatus[injectorName] = "Unknown";
             DetectStatus[injectorName] = "Unknown";
         });
+        
+        for (const [injectorName, detectStatus] of Object.entries(manualDetectStatuses)) {
+            if (allowedInjectors.includes(injectorName)) {
+                DetectStatus[injectorName] = detectStatus;
+            }
+        }
+        
         initializeStatuses();
     }
 
@@ -2317,7 +2344,7 @@
                 <div style="margin-top: 20px; padding: 15px; background: rgba(179, 142, 93, 0.1); border-radius: 10px; border: 1px solid rgba(179, 142, 93, 0.2);">
                     <h3 style="color: #b38e5d; margin-bottom: 10px; font-size: 1rem;">🌐 API Information</h3>
                     <p style="font-size: 0.9rem; opacity: 0.8; color: #c0c0c0;">
-                        Status loaded from weao.xyz API in real-time. Updates automatically every 5 minutes.
+                        Update status loaded from weao.xyz API in real-time. Detection status manually configured.
                     </p>
                 </div>
             `;
@@ -2360,3 +2387,5 @@
         }
     };
 </script>
+</body>
+</html>
