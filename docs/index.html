@@ -1802,40 +1802,51 @@
         }
     }
 
-    function processAPIStatuses(apiData) {
-        UpdateStatus = {};
-        DetectStatus = {};
+   function processAPIStatuses(apiData) {
+    UpdateStatus = {};
+    DetectStatus = {};
 
-        if (Array.isArray(apiData)) {
-            apiData.forEach(item => {
-                const injectorName = item.name || item.injector || item.title;
-                if (injectorName && allowedInjectors.includes(injectorName)) {
-                    UpdateStatus[injectorName] = item.updateStatus || item.status || "Unknown";
-                    DetectStatus[injectorName] = item.detectStatus || item.detected || "Unknown";
-                }
-            });
-        } else if (typeof apiData === "object" && apiData !== null) {
-            Object.keys(apiData).forEach(key => {
-                const injectorName = key;
-                if (allowedInjectors.includes(injectorName)) {
-                    const item = apiData[key];
-                    UpdateStatus[injectorName] = item.updateStatus || item.status || "Unknown";
-                    DetectStatus[injectorName] = item.detectStatus || item.detected || "Unknown";
-                }
-            });
+    const handleItem = (item) => {
+        const injectorName = item.name || item.injector || item.title;
+        if (!injectorName || !allowedInjectors.includes(injectorName)) return;
+
+        const updateRaw = item.updateStatus;
+        const detectRaw = item.detected;
+
+        if (typeof updateRaw === "boolean") {
+            UpdateStatus[injectorName] = updateRaw ? "Updated" : "Not Updated";
+        } else if (typeof item.status === "string") {
+            UpdateStatus[injectorName] = item.status;
+        } else {
+            UpdateStatus[injectorName] = "Unknown";
         }
 
-        allowedInjectors.forEach(injectorName => {
-            if (!UpdateStatus[injectorName]) {
-                UpdateStatus[injectorName] = "Unknown";
-            }
-            if (!DetectStatus[injectorName]) {
-                DetectStatus[injectorName] = "Unknown";
-            }
-        });
+        if (typeof detectRaw === "boolean") {
+            DetectStatus[injectorName] = detectRaw ? "Detected" : "Undetected";
+        } else if (typeof item.detectStatus === "string") {
+            DetectStatus[injectorName] = item.detectStatus;
+        } else {
+            DetectStatus[injectorName] = "Unknown";
+        }
+    };
 
-        initializeStatuses();
+    if (Array.isArray(apiData)) {
+        apiData.forEach(handleItem);
+    } else if (typeof apiData === "object" && apiData !== null) {
+        Object.keys(apiData).forEach(key => handleItem(apiData[key]));
     }
+
+    allowedInjectors.forEach(injectorName => {
+        if (!UpdateStatus[injectorName]) {
+            UpdateStatus[injectorName] = "Unknown";
+        }
+        if (!DetectStatus[injectorName]) {
+            DetectStatus[injectorName] = "Unknown";
+        }
+    });
+
+    initializeStatuses();
+   }
 
     function setDefaultStatuses() {
         allowedInjectors.forEach(injectorName => {
