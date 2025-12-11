@@ -1760,181 +1760,187 @@
     </div>
 
     <script>
-        // Список инжекторов для отображения (другие будут игнорироваться)
-        const allowedInjectors = [
-            "Volcano", "Velocity", "Wave", "Seliware", "Swift", "Valex",
-            "Potassium", "Bunni.lol", "Sirhurt", "Hydrogen", "Macsploit",
-            "Codex", "Cryptic", "Cryptic-Android", "Delta", "Delta-iOS",
-            "ChocoSploit"
-        ];
+    // Список инжекторов для отображения (другие будут игнорироваться)
+    const allowedInjectors = [
+        "Volcano", "Velocity", "Wave", "Seliware", "Swift", "Valex",
+        "Potassium", "Bunni.lol", "Sirhurt", "Hydrogen", "Macsploit",
+        "Codex", "Cryptic", "Cryptic-Android", "Delta", "Delta-iOS",
+        "ChocoSploit"
+    ];
 
-        // API URL для получения статусов
-        const API_URL = 'https://weao-proxy-c8hhzujes-2s-projects-5e8ea297.vercel.app/api/exploits';
+    // API URL для получения статусов
+    const API_URL = 'https://weao-proxy-c8hhzujes-2s-projects-5e8ea297.vercel.app/api/exploits';
 
-        // Объекты для хранения статусов
-        let UpdateStatus = {};
-        let DetectStatus = {};
+    // Объекты для хранения статусов
+    let UpdateStatus = {};
+    let DetectStatus = {};
 
-        // Получение статусов с API
-        async function fetchStatusesFromAPI() {
-            try {
-                const response = await fetch(API_URL);
-                
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                
-                const data = await response.json();
-                
-                // Обрабатываем данные API
-                processAPIStatuses(data);
-                
-                // Обновляем время последнего обновления
-                const lastUpdateElement = document.getElementById('lastUpdate');
-                const now = new Date();
-                lastUpdateElement.textContent = `Last update: ${now.toLocaleTimeString()}`;
-                
-                console.log('Статусы успешно обновлены с API');
-                
-            } catch (error) {
-                console.error('Ошибка при загрузке статусов:', error);
-                
-                // Устанавливаем статусы по умолчанию при ошибке
-                setDefaultStatuses();
-                
-                const lastUpdateElement = document.getElementById('lastUpdate');
-                lastUpdateElement.textContent = `Last update: Failed to load - ${new Date().toLocaleTimeString()}`;
-                lastUpdateElement.style.color = '#ff6b7a';
-            }
-        }
-
-        // Обработка данных с API
-        function processAPIStatuses(apiData) {
-            // Очищаем статусы перед обновлением
-            UpdateStatus = {};
-            DetectStatus = {};
-            
-            // Обрабатываем данные в зависимости от формата API
-            if (Array.isArray(apiData)) {
-                // Если API возвращает массив
-                apiData.forEach(item => {
-                    const injectorName = item.name || item.injector || item.title;
-                    if (injectorName && allowedInjectors.includes(injectorName)) {
-                        UpdateStatus[injectorName] = item.updateStatus || item.status || "Unknown";
-                        DetectStatus[injectorName] = item.detectStatus || item.detected || "Unknown";
-                    }
-                });
-            } else if (typeof apiData === 'object') {
-                // Если API возвращает объект
-                Object.keys(apiData).forEach(key => {
-                    const injectorName = key;
-                    if (allowedInjectors.includes(injectorName)) {
-                        const item = apiData[key];
-                        UpdateStatus[injectorName] = item.updateStatus || item.status || "Unknown";
-                        DetectStatus[injectorName] = item.detectStatus || item.detected || "Unknown";
-                    }
-                });
-            }
-            
-            // Устанавливаем статусы по умолчанию для инжекторов, которых нет в API
-            allowedInjectors.forEach(injectorName => {
-                if (!UpdateStatus[injectorName]) {
-                    UpdateStatus[injectorName] = "Unknown";
-                }
-                if (!DetectStatus[injectorName]) {
-                    DetectStatus[injectorName] = "Unknown";
+    // Получение статусов с API
+    async function fetchStatusesFromAPI() {
+        try {
+            const response = await fetch(API_URL, {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Accept': 'application/json'
                 }
             });
             
-            // Обновляем отображение всех статусов
-            initializeStatuses();
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            // Обрабатываем данные API
+            processAPIStatuses(data);
+            
+            // Обновляем время последнего обновления
+            const lastUpdateElement = document.getElementById('lastUpdate');
+            const now = new Date();
+            lastUpdateElement.textContent = `Last update: ${now.toLocaleTimeString()}`;
+            
+            console.log('Статусы успешно обновлены с API');
+            
+        } catch (error) {
+            console.error('Ошибка при загрузке статусов:', error);
+            
+            // Устанавливаем статусы по умолчанию при ошибке
+            setDefaultStatuses();
+            
+            const lastUpdateElement = document.getElementById('lastUpdate');
+            lastUpdateElement.textContent = `Last update: Failed to load - ${new Date().toLocaleTimeString()}`;
+            lastUpdateElement.style.color = '#ff6b7a';
         }
+    }
 
-        // Установка статусов по умолчанию при ошибке загрузки
-        function setDefaultStatuses() {
-            allowedInjectors.forEach(injectorName => {
+    // Обработка данных с API
+    function processAPIStatuses(apiData) {
+        // Очищаем статусы перед обновлением
+        UpdateStatus = {};
+        DetectStatus = {};
+        
+        // Обрабатываем данные в зависимости от формата API
+        if (Array.isArray(apiData)) {
+            // Если API возвращает массив
+            apiData.forEach(item => {
+                const injectorName = item.name || item.injector || item.title;
+                if (injectorName && allowedInjectors.includes(injectorName)) {
+                    UpdateStatus[injectorName] = item.updateStatus || item.status || "Unknown";
+                    DetectStatus[injectorName] = item.detectStatus || item.detected || "Unknown";
+                }
+            });
+        } else if (typeof apiData === 'object') {
+            // Если API возвращает объект
+            Object.keys(apiData).forEach(key => {
+                const injectorName = key;
+                if (allowedInjectors.includes(injectorName)) {
+                    const item = apiData[key];
+                    UpdateStatus[injectorName] = item.updateStatus || item.status || "Unknown";
+                    DetectStatus[injectorName] = item.detectStatus || item.detected || "Unknown";
+                }
+            });
+        }
+        
+        // Устанавливаем статусы по умолчанию для инжекторов, которых нет в API
+        allowedInjectors.forEach(injectorName => {
+            if (!UpdateStatus[injectorName]) {
                 UpdateStatus[injectorName] = "Unknown";
-                DetectStatus[injectorName] = "Unknown";
-            });
-            
-            initializeStatuses();
-        }
-
-        // Обновление отображения статуса
-        function updateStatusDisplay(injectorName) {
-            const statusContainer = document.getElementById(`status-${injectorName}`);
-            if (!statusContainer) return;
-            
-            statusContainer.innerHTML = '';
-            
-            const updateStatus = UpdateStatus[injectorName] || "Unknown";
-            const detectStatus = DetectStatus[injectorName] || "Unknown";
-            
-            const updateIndicator = createStatusIndicator('update', updateStatus);
-            const detectIndicator = createStatusIndicator('detect', detectStatus);
-            
-            statusContainer.appendChild(updateIndicator);
-            statusContainer.appendChild(detectIndicator);
-        }
-
-        // Инициализация всех статусов
-        function initializeStatuses() {
-            // Инициализируем статусы для каждого разрешенного инжектора
-            allowedInjectors.forEach(injectorName => {
-                updateStatusDisplay(injectorName);
-            });
-        }
-
-        // Создание индикатора статуса
-        function createStatusIndicator(type, status) {
-            const indicator = document.createElement('div');
-            indicator.className = 'status-indicator';
-            
-            if (type === 'update') {
-                if (status === 'Updated' || status === 'updated') {
-                    indicator.className = 'status-indicator status-updated';
-                    indicator.textContent = 'Updated';
-                } else if (status === 'Not Updated' || status === 'not_updated' || status === 'not updated') {
-                    indicator.className = 'status-indicator status-not-updated';
-                    indicator.textContent = 'Not Updated';
-                } else {
-                    indicator.className = 'status-indicator status-unknown-update';
-                    indicator.textContent = status || 'Unknown';
-                }
-            } else {
-                if (status === 'Detected' || status === 'detected') {
-                    indicator.className = 'status-indicator status-detected';
-                    indicator.textContent = 'Detected';
-                } else if (status === 'Undetected' || status === 'undetected') {
-                    indicator.className = 'status-indicator status-undetected';
-                    indicator.textContent = 'Undetected';
-                } else if (status === 'Testing' || status === 'testing') {
-                    indicator.className = 'status-indicator status-testing';
-                    indicator.textContent = 'Testing';
-                } else {
-                    indicator.className = 'status-indicator status-unknown-update';
-                    indicator.textContent = status || 'Unknown';
-                }
             }
-            
-            return indicator;
-        }
-
-        // Инициализация при загрузке страницы
-        document.addEventListener('DOMContentLoaded', function() {
-            // Загружаем статусы с API при загрузке страницы
-            fetchStatusesFromAPI();
-            
-            // Обновляем статусы каждые 5 минут
-            setInterval(fetchStatusesFromAPI, 5 * 60 * 1000);
-            
-            // Инициализируем остальные компоненты
-            resizeCanvas();
-            animateParticles();
-            createFloatingParticles();
-            checkTechnicalIssues();
-            handleScrollAnimations();
+            if (!DetectStatus[injectorName]) {
+                DetectStatus[injectorName] = "Unknown";
+            }
         });
+        
+        // Обновляем отображение всех статусов
+        initializeStatuses();
+    }
+
+    // Установка статусов по умолчанию при ошибке загрузки
+    function setDefaultStatuses() {
+        allowedInjectors.forEach(injectorName => {
+            UpdateStatus[injectorName] = "Unknown";
+            DetectStatus[injectorName] = "Unknown";
+        });
+        
+        initializeStatuses();
+    }
+
+    // Обновление отображения статуса
+    function updateStatusDisplay(injectorName) {
+        const statusContainer = document.getElementById(`status-${injectorName}`);
+        if (!statusContainer) return;
+        
+        statusContainer.innerHTML = '';
+        
+        const updateStatus = UpdateStatus[injectorName] || "Unknown";
+        const detectStatus = DetectStatus[injectorName] || "Unknown";
+        
+        const updateIndicator = createStatusIndicator('update', updateStatus);
+        const detectIndicator = createStatusIndicator('detect', detectStatus);
+        
+        statusContainer.appendChild(updateIndicator);
+        statusContainer.appendChild(detectIndicator);
+    }
+
+    // Инициализация всех статусов
+    function initializeStatuses() {
+        // Инициализируем статусы для каждого разрешенного инжектора
+        allowedInjectors.forEach(injectorName => {
+            updateStatusDisplay(injectorName);
+        });
+    }
+
+    // Создание индикатора статуса
+    function createStatusIndicator(type, status) {
+        const indicator = document.createElement('div');
+        indicator.className = 'status-indicator';
+        
+        if (type === 'update') {
+            if (status === 'Updated' || status === 'updated') {
+                indicator.className = 'status-indicator status-updated';
+                indicator.textContent = 'Updated';
+            } else if (status === 'Not Updated' || status === 'not_updated' || status === 'not updated') {
+                indicator.className = 'status-indicator status-not-updated';
+                indicator.textContent = 'Not Updated';
+            } else {
+                indicator.className = 'status-indicator status-unknown-update';
+                indicator.textContent = status || 'Unknown';
+            }
+        } else {
+            if (status === 'Detected' || status === 'detected') {
+                indicator.className = 'status-indicator status-detected';
+                indicator.textContent = 'Detected';
+            } else if (status === 'Undetected' || status === 'undetected') {
+                indicator.className = 'status-indicator status-undetected';
+                indicator.textContent = 'Undetected';
+            } else if (status === 'Testing' || status === 'testing') {
+                indicator.className = 'status-indicator status-testing';
+                indicator.textContent = 'Testing';
+            } else {
+                indicator.className = 'status-indicator status-unknown-update';
+                indicator.textContent = status || 'Unknown';
+            }
+        }
+        
+        return indicator;
+    }
+
+    // Инициализация при загрузке страницы
+    document.addEventListener('DOMContentLoaded', function() {
+        // Загружаем статусы с API при загрузке страницы
+        fetchStatusesFromAPI();
+        
+        // Обновляем статусы каждые 5 минут
+        setInterval(fetchStatusesFromAPI, 5 * 60 * 1000);
+        
+        // Инициализируем остальные компоненты
+        resizeCanvas();
+        animateParticles();
+        createFloatingParticles();
+        checkTechnicalIssues();
+        handleScrollAnimations();
+    });
 
         // Остальной код без изменений...
         const canvas = document.getElementById('animated-bg');
