@@ -2,55 +2,84 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8">
-  <title>Эксплойты из API</title>
+  <title>WEAO Exploits</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
     .card {
       background: white;
       border-radius: 8px;
-      padding: 16px;
-      margin: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      padding: 15px;
+      width: 250px;
     }
-    .card img { max-width: 120px; }
-    .title { font-size: 18px; font-weight: bold; }
-    .version { color: gray; }
-    .links a { margin-right: 10px; }
+    .card h2 {
+      font-size: 18px;
+      margin: 0 0 10px;
+    }
+    .card p {
+      margin: 5px 0;
+    }
+    .detected {
+      color: red;
+      font-weight: bold;
+    }
+    .undetected {
+      color: green;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
-  <h1>Список эксплойтов</h1>
-  <div id="container"></div>
+  <h1>Список эксплойтов WEAO</h1>
+  <div class="grid" id="exploitGrid"></div>
 
   <script>
-    async function loadData() {
-      const res = await fetch("https://solitary-shape-2360.gamesone361.workers.dev/");
-      const data = await res.json();
+    async function loadExploits() {
+      try {
+        const res = await fetch("http://localhost:3000/api/exploits");
+        const data = await res.json();
 
-      const container = document.getElementById("container");
-      container.innerHTML = "";
+        const grid = document.getElementById("exploitGrid");
+        grid.innerHTML = "";
 
-      data.forEach(item => {
-        const card = document.createElement("div");
-        card.className = "card";
+        data.forEach(exploit => {
+          const card = document.createElement("div");
+          card.className = "card";
 
-        card.innerHTML = `
-          <div class="title">${item.title}</div>
-          <div class="version">Версия: ${item.version}</div>
-          <div>Обновлено: ${item.updatedDate}</div>
-          <div>Цена: ${item.cost || "Бесплатно"}</div>
-          <div class="links">
-            <a href="${item.websitelink}" target="_blank">Сайт</a>
-            <a href="${item.discordlink}" target="_blank">Discord</a>
-            ${item.purchaselink ? `<a href="${item.purchaselink}" target="_blank">Купить</a>` : ""}
-          </div>
-          ${item.slug?.logo ? `<img src="${item.slug.logo}" alt="${item.title}">` : ""}
-        `;
-        container.appendChild(card);
-      });
+          card.innerHTML = `
+            <h2>${exploit.title}</h2>
+            <p><strong>Версия:</strong> ${exploit.version}</p>
+            <p><strong>Дата обновления:</strong> ${exploit.updatedDate}</p>
+            <p><strong>Платформа:</strong> ${exploit.platform}</p>
+            <p><strong>Цена:</strong> ${exploit.cost}</p>
+            <p><strong>Статус:</strong> 
+              <span class="${exploit.detected ? 'detected' : 'undetected'}">
+                ${exploit.detected ? 'Обнаружен' : 'Не обнаружен'}
+              </span>
+            </p>
+          `;
+          grid.appendChild(card);
+        });
+      } catch (err) {
+        console.error("Ошибка загрузки:", err);
+      }
     }
 
-    loadData();
+    loadExploits();
   </script>
 </body>
 </html>
