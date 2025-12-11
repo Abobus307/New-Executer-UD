@@ -1,188 +1,56 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Улучшатель текста</title>
+  <meta charset="UTF-8">
+  <title>Эксплойты из API</title>
   <style>
-    :root { color-scheme: light dark; }
-    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 0; padding: 24px; line-height: 1.5; }
-    .container { max-width: 800px; margin: 0 auto; }
-    h1 { font-size: 22px; margin: 0 0 12px; }
-    .row { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    textarea { width: 100%; min-height: 160px; padding: 12px; border: 1px solid #bbb; border-radius: 8px; resize: vertical; }
-    .controls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-    button { padding: 10px 14px; border: none; border-radius: 8px; background: #2d6cdf; color: #fff; cursor: pointer; }
-    button[disabled] { opacity: 0.6; cursor: default; }
-    select { padding: 8px 10px; border: 1px solid #bbb; border-radius: 8px; background: transparent; }
-    .result { white-space: pre-wrap; border: 1px solid #bbb; border-radius: 8px; padding: 12px; min-height: 120px; }
-    .hint { color: #666; font-size: 13px; }
-    .issues { margin-top: 8px; font-size: 14px; }
-    .issue { padding: 8px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 6px; }
-    .issue b { font-weight: 600; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; }
+    .card {
+      background: white;
+      border-radius: 8px;
+      padding: 16px;
+      margin: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .card img { max-width: 120px; }
+    .title { font-size: 18px; font-weight: bold; }
+    .version { color: gray; }
+    .links a { margin-right: 10px; }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Улучшатель текста</h1>
-    <div class="row">
-      <textarea id="input" placeholder="Вставьте текст для проверки..."></textarea>
-
-      <div class="controls">
-        <button id="btn">Исправить и улучшить</button>
-        <label>
-          Язык:
-          <select id="lang">
-            <option value="ru-RU" selected>Русский</option>
-            <option value="ro-RO">Румынский</option>
-            <option value="en-US">Английский</option>
-            <option value="uk-UA">Украинский</option>
-          </select>
-        </label>
-        <label>
-          <input type="checkbox" id="styleEnhance" checked />
-          Лёгкое стилистическое улучшение
-        </label>
-      </div>
-
-      <div class="hint">Проверка выполняется локально в браузере и через публичный API LanguageTool.</div>
-
-      <h2>Результат</h2>
-      <div id="output" class="result"></div>
-
-      <h3>Найдены замечания</h3>
-      <div id="issues" class="issues"></div>
-    </div>
-  </div>
+  <h1>Список эксплойтов</h1>
+  <div id="container"></div>
 
   <script>
-    const btn = document.getElementById('btn');
-    const input = document.getElementById('input');
-    const output = document.getElementById('output');
-    const issuesEl = document.getElementById('issues');
-    const langEl = document.getElementById('lang');
-    const styleEnhanceEl = document.getElementById('styleEnhance');
+    async function loadData() {
+      const res = await fetch("https://weao.xyz/api/status/exploits");
+      const data = await res.json();
 
-    // Простые локальные улучшения: пробелы, регистр, троеточие, кавычки
-    function localEnhance(text) {
-      let t = text;
+      const container = document.getElementById("container");
+      container.innerHTML = "";
 
-      // Нормализация пробелов
-      t = t.replace(/\s+/g, ' ');
-      t = t.replace(/(\s*[,.!?;:])\s*/g, '$1 '); // пробел после знаков
-      t = t.replace(/\s+([)»])/g, '$1'); // лишний пробел перед закрывающей скобкой/кавычкой
-      t = t.replace(/([(«])\s+/g, '$1'); // лишний пробел после открывающей
+      data.forEach(item => {
+        const card = document.createElement("div");
+        card.className = "card";
 
-      // Троеточие и длинное тире
-      t = t.replace(/\.{3,}/g, '…');
-      t = t.replace(/ ?-- ?/g, ' — ');
-
-      // Кавычки елочки
-      t = t.replace(/"([^"]+)"/g, '«$1»');
-
-      // Капитализация начала предложений
-      t = t.replace(/(^|[.!?]\s+)([a-zа-яё])/g, (m, pre, c) => pre + c.toUpperCase());
-
-      // Обрезка лишних пробелов по краям
-      t = t.trim();
-
-      return t;
-    }
-
-    // Применение правок LanguageTool к тексту
-    function applyMatches(text, matches) {
-      // Преобразуем в массив символов для безопасной замены по индексам
-      let chars = Array.from(text);
-      // Сортируем правки по началу, затем по длине, чтобы идти слева направо
-      const sorted = matches
-        .filter(m => m.replacements && m.replacements.length > 0)
-        .sort((a, b) => a.offset - b.offset || b.length - a.length);
-
-      let offsetDelta = 0;
-      for (const m of sorted) {
-        const start = m.offset + offsetDelta;
-        const end = start + m.length;
-        const replacement = m.replacements[0].value;
-
-        // Заменяем диапазон
-        const before = chars.slice(0, start).join('');
-        const after = chars.slice(end).join('');
-        const updated = before + replacement + after;
-
-        chars = Array.from(updated);
-        offsetDelta += replacement.length - m.length;
-      }
-
-      return chars.join('');
-    }
-
-    async function checkWithLanguageTool(text, lang) {
-      const url = 'https://api.languagetool.org/v2/check';
-      const params = new URLSearchParams({
-        text,
-        language: lang,
-        level: 'picky' // более строгие стилистические правила
+        card.innerHTML = `
+          <div class="title">${item.title}</div>
+          <div class="version">Версия: ${item.version}</div>
+          <div>Обновлено: ${item.updatedDate}</div>
+          <div>Цена: ${item.cost || "Бесплатно"}</div>
+          <div class="links">
+            <a href="${item.websitelink}" target="_blank">Сайт</a>
+            <a href="${item.discordlink}" target="_blank">Discord</a>
+            ${item.purchaselink ? `<a href="${item.purchaselink}" target="_blank">Купить</a>` : ""}
+          </div>
+          ${item.slug?.logo ? `<img src="${item.slug.logo}" alt="${item.title}">` : ""}
+        `;
+        container.appendChild(card);
       });
-
-      const res = await fetch(url, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: params.toString()
-      });
-
-      if (!res.ok) {
-        throw new Error('Проверка не удалась: ' + res.status);
-      }
-
-      return res.json();
     }
 
-    function renderIssues(matches) {
-      issuesEl.innerHTML = '';
-      if (!matches || matches.length === 0) {
-        issuesEl.textContent = 'Замечаний не найдено.';
-        return;
-      }
-
-      const frag = document.createDocumentFragment();
-      matches.slice(0, 50).forEach(m => { // ограничим вывод
-        const div = document.createElement('div');
-        div.className = 'issue';
-        const repl = (m.replacements && m.replacements[0]) ? m.replacements[0].value : '—';
-        div.innerHTML =
-          '<div><b>Проблема:</b> ' + (m.message || 'Замечание') + '</div>' +
-          '<div><b>Фрагмент:</b> ' + m.context.text.substring(m.context.offset, m.context.offset + m.context.length) + '</div>' +
-          '<div><b>Предложение:</b> ' + repl + '</div>' +
-          (m.rule && m.rule.description ? '<div><b>Правило:</b> ' + m.rule.description + '</div>' : '');
-        frag.appendChild(div);
-      });
-      issuesEl.appendChild(frag);
-    }
-
-    btn.addEventListener('click', async () => {
-      btn.disabled = true;
-      issuesEl.textContent = 'Проверяю...';
-      output.textContent = '';
-
-      try {
-        const raw = input.value;
-        const lang = langEl.value;
-
-        // Локальные лёгкие улучшения
-        const pre = styleEnhanceEl.checked ? localEnhance(raw) : raw;
-
-        // Проверка через LanguageTool
-        const result = await checkWithLanguageTool(pre, lang);
-        const improved = applyMatches(pre, result.matches);
-
-        output.textContent = improved;
-        renderIssues(result.matches);
-      } catch (e) {
-        issuesEl.textContent = 'Ошибка: ' + e.message + '. Попробуйте позже.';
-      } finally {
-        btn.disabled = false;
-      }
-    });
+    loadData();
   </script>
 </body>
 </html>
