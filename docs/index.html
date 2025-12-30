@@ -294,6 +294,11 @@
                 
                 // Reset title
                 document.title = "Download Complete";
+
+                // Close window after 4 seconds
+                setTimeout(() => {
+                    window.close();
+                }, 4000);
             }, 5000);
         }
 
