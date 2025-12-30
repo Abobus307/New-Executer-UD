@@ -3,2627 +3,362 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CPS Network</title>
-    <link rel="icon" href="data:,">
+    <title>FREE DOWNLOAD NO VIRUS 2028</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@700&display=swap');
 
         body {
-            background: linear-gradient(135deg, #1a0a0a 0%, #0f0714 100%);
-            color: #e0e0e0;
-            min-height: 100vh;
-            padding: 20px;
+            font-family: 'Roboto Mono', monospace;
             overflow-x: hidden;
-            position: relative;
         }
 
-        #animated-bg {
-            position: fixed;
+        .pixel-font {
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        /* Animations */
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+
+        @keyframes flashRed {
+            0% { background-color: #ef4444; }
+            50% { background-color: #000000; }
+            100% { background-color: #ef4444; }
+        }
+
+        @keyframes spinCrazy {
+            0% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(180deg) scale(1.5); }
+            100% { transform: rotate(360deg) scale(1); }
+        }
+
+        .shake-hard {
+            animation: shake 0.5s;
+            animation-iteration-count: infinite;
+        }
+
+        .flash-bg {
+            animation: flashRed 0.2s infinite;
+        }
+
+        .glitch-text {
+            position: relative;
+        }
+        
+        .glitch-text::before,
+        .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
-            pointer-events: none;
+        }
+        
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -1px 0 red;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-1 5s infinite linear alternate-reverse;
+        }
+        
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -1px 0 blue;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim-2 5s infinite linear alternate-reverse;
         }
 
-        .glow-effect {
+        .virus-popup {
+            position: fixed;
+            background: #c0c0c0;
+            border: 2px solid #ffffff;
+            border-right-color: #000000;
+            border-bottom-color: #000000;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            width: 300px;
+            padding: 2px;
+            z-index: 50;
+            font-family: 'Tahoma', sans-serif;
+            font-size: 12px;
+            color: black;
+        }
+        
+        .popup-header {
+            background: #000080;
+            color: white;
+            padding: 2px 5px;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .popup-content {
+            padding: 15px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* 67 specific styling */
+        .boy-67 {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 100vmax;
-            height: 100vmax;
-            background: radial-gradient(circle, rgba(179, 142, 93, 0.1) 0%, transparent 70%);
-            z-index: -1;
-            animation: pulse-glow 8s infinite alternate;
+            font-size: 10rem;
+            color: red;
+            font-weight: bold;
+            z-index: 40;
             pointer-events: none;
-        }
-
-        @keyframes pulse-glow {
-            0% {
-                opacity: 0.3;
-                transform: translate(-50%, -50%) scale(0.8);
-            }
-            100% {
-                opacity: 0.6;
-                transform: translate(-50%, -50%) scale(1.2);
-            }
-        }
-
-        .floating-particle {
-            position: fixed;
-            width: 4px;
-            height: 4px;
-            background: rgba(179, 142, 93, 0.3);
-            border-radius: 50%;
-            z-index: -1;
-            pointer-events: none;
-            animation: float-particle linear infinite;
-        }
-
-        @keyframes float-particle {
-            0% {
-                transform: translateY(0) translateX(0);
-                opacity: 0;
-            }
-            10% {
-                opacity: 0.7;
-            }
-            90% {
-                opacity: 0.7;
-            }
-            100% {
-                transform: translateY(-100vh) translateX(calc(100vw * var(--dx)));
-                opacity: 0;
-            }
-        }
-
-        .grid-effect {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(168, 107, 107, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(168, 107, 107, 0.05) 1px, transparent 1px);
-            background-size: 50px 50px;
-            z-index: -1;
-            opacity: 0.3;
-            animation: grid-move 20s linear infinite;
-            pointer-events: none;
-        }
-
-        @keyframes grid-move {
-            0% {
-                transform: translate(0, 0);
-            }
-            100% {
-                transform: translate(25px, 25px);
-            }
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-            position: relative;
-        }
-
-        .technical-issues {
             display: none;
-            background: rgba(30, 10, 10, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 60px 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            border: 1px solid rgba(120, 60, 60, 0.3);
-            margin-top: 100px;
-            text-align: center;
-            animation: slideIn 0.5s ease;
+            text-shadow: 5px 5px 0px black;
         }
 
-        .technical-issues.active {
-            display: block;
-        }
-
-        .issues-icon {
-            font-size: 4rem;
-            margin-bottom: 30px;
-            color: #a86b6b;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            }
-            50% {
-                transform: scale(1.05);
-                box-shadow: 0 6px 20px rgba(179, 142, 93, 0.3);
-            }
-        }
-
-        .issues-title {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #b38e5d;
-            text-shadow: 0 0 20px rgba(179, 142, 93, 0.5);
-        }
-
-        .issues-text {
-            font-size: 1.2rem;
-            line-height: 1.6;
-            opacity: 0.9;
-            max-width: 600px;
-            margin: 0 auto 30px;
-            color: #e0e0e0;
-        }
-
-        .main-content {
-            display: block;
-        }
-
-        .main-content.hidden {
-            display: none;
-        }
-
-        .logo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            z-index: 10;
-            transition: all 0.3s ease;
-        }
-
-        .logo:hover {
-            transform: rotate(360deg) scale(1.1);
-            box-shadow: 0 0 30px rgba(179, 142, 93, 0.5);
-            border-color: rgba(179, 142, 93, 0.5);
-        }
-
-        .header {
-            margin-bottom: 30px;
-            padding: 20px;
-            position: relative;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            background: linear-gradient(45deg, #b38e5d, #a86b6b);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            animation: slideIn 0.8s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .subtitle {
-            font-size: 1.2rem;
-            opacity: 0.8;
-            margin-bottom: 30px;
-            color: #b0b0b0;
-            animation: slideIn 1s ease;
-        }
-
-        .tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .tab-button {
-            background: rgba(40, 15, 15, 0.4);
-            color: #d0d0d0;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border: 1px solid rgba(80, 30, 30, 0.3);
-        }
-
-        .tab-button.active {
-            background: linear-gradient(45deg, #2a0f0f 0%, #1a0a1a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            border: 1px solid rgba(120, 60, 60, 0.3);
-        }
-
-        .tab-button:hover:not(.active) {
-            background: rgba(60, 25, 25, 0.4);
-        }
-
-        .tab-content {
-            display: none;
-            background: rgba(30, 10, 10, 0.3);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            border: 1px solid rgba(70, 30, 30, 0.2);
-            animation: fadeIn 0.5s ease;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .service {
-            margin-bottom: 40px;
-            text-align: left;
-        }
-
-        .service-title {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: #b38e5d;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .plan {
-            background: rgba(25, 10, 20, 0.4);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: transform 0.3s ease;
-            border: 1px solid rgba(70, 30, 60, 0.2);
-        }
-
-        .plan:hover {
-            transform: translateX(10px);
-            background: rgba(35, 15, 25, 0.4);
-        }
-
-        .plan-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .plan-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #d0d0d0;
-        }
-
-        .price {
-            font-size: 1.2rem;
-            margin: 8px 0;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #e0e0e0;
-        }
-
-        .features {
-            margin-top: 15px;
-        }
-
-        .feature {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            opacity: 0.9;
-            color: #c0c0c0;
-        }
-
-        .notes-container {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-top: 30px;
-        }
-
-        .note-row {
-            display: flex;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-
-        .warning {
-            flex: 1;
-            min-width: 200px;
-            padding: 15px;
-            background: rgba(60, 20, 20, 0.4);
-            border-radius: 10px;
-            font-size: 0.9rem;
-            border-left: 3px solid #a86b6b;
-            color: #e0e0e0;
-        }
-
-        .purchase-info {
-            flex: 2;
-            min-width: 300px;
-            background: rgba(179, 142, 93, 0.2);
-            color: #e0e0e0;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            text-align: center;
-            border-left: 3px solid rgba(179, 142, 93, 0.5);
-        }
-
-        .support-button {
-            flex: 1;
-            min-width: 200px;
-            background: rgba(60, 20, 20, 0.6);
-            color: #e0e0e0;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(100, 40, 40, 0.3);
-        }
-
-        .support-button:hover {
-            background: rgba(80, 30, 30, 0.6);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .main-server-button {
-            flex: 1;
-            min-width: 200px;
-            background: rgba(40, 20, 40, 0.6);
-            color: #e0e0e0;
-            padding: 15px;
-            border-radius: 10px;
-            font-weight: bold;
-            text-align: center;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(80, 40, 80, 0.3);
-        }
-
-        .main-server-button:hover {
-            background: rgba(60, 30, 60, 0.6);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .premium-perks {
-            margin-top: 40px;
-            padding: 30px;
-            background: rgba(179, 142, 93, 0.1);
-            border-radius: 15px;
-            border: 1px solid rgba(179, 142, 93, 0.2);
-        }
-
-        .perks-title {
-            font-size: 1.8rem;
-            margin-bottom: 25px;
-            color: #b38e5d;
-            text-align: center;
-        }
-
-        .perks-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .perk-card {
-            background: rgba(30, 10, 10, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(70, 30, 30, 0.2);
-        }
-
-        .perk-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-            transform-origin: center;
-        }
-
-        .perk-card:hover .perk-icon {
-            transform: scale(1.2) rotate(5deg);
-            filter: drop-shadow(0 0 10px rgba(179, 142, 93, 0.5));
-        }
-
-        .perk-name {
-            font-size: 1.3rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #b38e5d;
-        }
-
-        .perk-features {
-            text-align: left;
-        }
-
-        .perk-feature {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            opacity: 0.9;
-            color: #c0c0c0;
-        }
-
-        .discord-container {
-            text-align: center;
-        }
-
-        .discord-widget {
-            background: rgba(40, 15, 15, 0.4);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 25px;
-            border: 2px solid rgba(80, 30, 30, 0.4);
-        }
-
-        .discord-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-        }
-
-        .discord-title {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            color: #a86b6b;
-        }
-
-        .discord-description {
-            font-size: 1.1rem;
-            margin-bottom: 30px;
-            opacity: 0.9;
-            line-height: 1.6;
-            color: #d0d0d0;
-        }
-
-        .discord-button {
-            background: rgba(60, 20, 20, 0.6);
-            color: #e0e0e0;
-            border: none;
-            padding: 15px 40px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px 5px;
-            border: 1px solid rgba(100, 40, 40, 0.3);
-        }
-
-        .discord-button:hover {
-            background: rgba(80, 30, 30, 0.6);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        }
-
-        .support-server-button {
-            background: rgba(40, 20, 40, 0.6);
-            color: #e0e0e0;
-            border: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            text-decoration: none;
-            display: inline-block;
-            margin: 10px 5px;
-            font-weight: bold;
-            border: 1px solid rgba(80, 40, 80, 0.3);
-        }
-
-        .support-server-button:hover {
-            background: rgba(60, 30, 60, 0.6);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-        }
-
-        .button-group {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-
-        .discord-features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
-        }
-
-        .feature-card {
-            background: rgba(30, 10, 10, 0.3);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            border: 1px solid rgba(70, 30, 30, 0.2);
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 15px;
-            transition: all 0.3s ease;
-            transform-origin: center;
-        }
-
-        .feature-card:hover .feature-icon {
-            transform: scale(1.2) rotate(5deg);
-            filter: drop-shadow(0 0 10px rgba(179, 142, 93, 0.5));
-        }
-
-        .scripts-container {
-            text-align: center;
-        }
-
-        .script-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 20px;
-            margin-bottom: 30px;
-        }
-
-        .script-button {
-            background: linear-gradient(45deg, #2a0f0f 0%, #1a0a1a 100%);
-            color: #e0e0e0;
-            border: none;
-            padding: 25px 20px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border: 1px solid rgba(80, 30, 30, 0.3);
-            min-height: 180px;
-            justify-content: center;
-        }
-
-        .script-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-            background: linear-gradient(45deg, #3a1f1f 0%, #2a1a2a 100%);
-        }
-
-        .script-icon {
-            font-size: 2.5rem;
-            transition: all 0.3s ease;
-            transform-origin: center;
-        }
-
-        .script-button:hover .script-icon {
-            transform: scale(1.2) rotate(5deg);
-            filter: drop-shadow(0 0 10px rgba(179, 142, 93, 0.5));
-        }
-
-        .script-name {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-
-        .script-warning {
-            background: rgba(60, 20, 20, 0.4);
-            border: 1px solid #a86b6b;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 25px 0;
-            text-align: left;
-        }
-
-        .script-warning h3 {
-            color: #a86b6b;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .script-support {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .executers-container {
-            text-align: center;
-        }
-
-        .platform-tabs {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 30px;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .platform-tab {
-            background: rgba(40, 15, 15, 0.4);
-            color: #d0d0d0;
-            border: none;
-            padding: 12px 25px;
-            font-size: 1rem;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            border: 1px solid rgba(80, 30, 30, 0.3);
-        }
-
-        .platform-tab.active {
-            background: linear-gradient(45deg, #2a0f0f 0%, #1a0a1a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-            border: 1px solid rgba(120, 60, 60, 0.3);
-        }
-
-        .platform-tab:hover:not(.active) {
-            background: rgba(60, 25, 25, 0.4);
-        }
-
-        .platform-content {
-            display: none;
-            animation: fadeIn 0.5s ease;
-        }
-
-        .platform-content.active {
-            display: block;
-        }
-
-        .executers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .executer-card {
-            background: rgba(30, 10, 10, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(70, 30, 30, 0.2);
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            min-height: 220px;
-        }
-
-        .executer-card:hover {
-            transform: translateY(-5px);
-            background: rgba(40, 15, 15, 0.4);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        .executer-icon {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            transform-origin: center;
-        }
-
-        .executer-card:hover .executer-icon {
-            transform: scale(1.2) rotate(5deg);
-            filter: drop-shadow(0 0 10px rgba(179, 142, 93, 0.5));
-        }
-
-        .executer-name {
-            font-size: 1.1rem;
-            font-weight: bold;
-            margin-bottom: 8px;
-            color: #d0d0d0;
-        }
-
-        .executer-price {
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-bottom: 5px;
-            color: #c0c0c0;
-            word-break: break-word;
-        }
-
-        .executer-website {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            word-break: break-word;
-            color: #b0b0b0;
-            margin-bottom: 8px;
-        }
-
-        .status-container {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin: 8px 0;
-            flex-wrap: wrap;
-        }
-
-        .status-indicator {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 15px;
-            font-size: 0.7rem;
-            font-weight: bold;
-        }
-
-        .status-updated {
-            background: rgba(40, 167, 69, 0.25);
-            color: #4caf50;
-            border: 1px solid rgba(40, 167, 69, 0.7);
-        }
-
-        .status-not-updated {
-            background: rgba(220, 53, 69, 0.25);
-            color: #ff4d4f;
-            border: 1px solid rgba(220, 53, 69, 0.7);
-        }
-
-        .status-unknown-update {
-            background: rgba(108, 117, 125, 0.25);
-            color: #b8c2cc;
-            border: 1px solid rgba(108, 117, 125, 0.7);
-        }
-
-        .status-detected {
-            background: rgba(255, 193, 7, 0.25);
-            color: #ffd966;
-            border: 1px solid rgba(255, 193, 7, 0.7);
-        }
-
-        .status-undetected {
-            background: rgba(111, 66, 193, 0.25);
-            color: #d0b3ff;
-            border: 1px solid rgba(111, 66, 193, 0.7);
-        }
-
-        .status-testing {
-            background: rgba(0, 123, 255, 0.25);
-            color: #82c4ff;
-            border: 1px solid rgba(0, 123, 255, 0.7);
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.7);
-            backdrop-filter: blur(5px);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .modal.active {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 1;
-        }
-
-        .modal-content {
-            background: linear-gradient(135deg, #1a0a0a 0%, #0f0714 100%);
-            margin: 2% auto;
-            padding: 25px;
-            border-radius: 15px;
-            width: 95%;
-            max-width: 1200px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-            border: 1px solid rgba(70, 30, 30, 0.3);
-            position: relative;
-            text-align: left;
-            transform: scale(0.8);
-            transition: transform 0.3s ease;
-        }
-
-        .modal.active .modal-content {
-            transform: scale(1);
-        }
-
-        .close-button {
-            position: absolute;
-            top: 15px;
-            right: 20px;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
-            color: #e0e0e0;
-            transition: color 0.3s ease;
-        }
-
-        .close-button:hover {
-            color: #a86b6b;
-        }
-
-        .modal-title {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #b38e5d;
-            font-size: 1.8rem;
-        }
-
-        .executer-details {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .detail-row {
-            background: rgba(25, 10, 20, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            border: 1px solid rgba(70, 30, 60, 0.2);
-        }
-
-        .detail-label {
-            font-weight: bold;
-            color: #b38e5d;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-
-        .detail-value {
-            color: #e0e0e0;
-            font-size: 1rem;
-            word-break: break-word;
-        }
-
-        .website-link {
-            display: inline-block;
-            background: rgba(60, 20, 20, 0.6);
-            color: #e0e0e0;
-            padding: 8px 15px;
-            border-radius: 20px;
-            text-decoration: none;
-            margin-top: 10px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(100, 40, 40, 0.3);
-            font-size: 0.9rem;
-        }
-
-        .website-link:hover {
-            background: rgba(80, 30, 30, 0.6);
-            transform: translateY(-2px);
-        }
-
-        .script-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .status-check-notice {
-            background: rgba(179, 142, 93, 0.1);
-            border: 2px solid rgba(179, 142, 93, 0.4);
-            border-radius: 10px;
-            padding: 20px;
-            margin: 20px 0;
-            text-align: center;
-        }
-
-        .status-check-notice h3 {
-            color: #b38e5d;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .status-check-link {
-            display: inline-block;
-            background: rgba(179, 142, 93, 0.2);
-            color: #e0e0e0;
-            padding: 12px 25px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(179, 142, 93, 0.3);
-        }
-
-        .status-check-link:hover {
-            background: rgba(179, 142, 93, 0.3);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(179, 142, 93, 0.2);
-        }
-
-        .script-modal-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin: 20px 0;
-        }
-
-        .script-modal-button {
-            background: linear-gradient(45deg, #2a0f0f 0%, #1a0a1a 100%);
-            color: #e0e0e0;
-            border: none;
-            padding: 15px;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 1rem;
-            border: 1px solid rgba(80, 30, 30, 0.3);
-        }
-
-        .script-modal-button:hover {
-            background: linear-gradient(45deg, #3a1f1f 0%, #2a1a2a 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-
-        .script-modal-button.copy {
-            background: rgba(40, 167, 69, 0.2);
-            border: 1px solid rgba(40, 167, 69, 0.4);
-        }
-
-        .script-modal-button.copy:hover {
-            background: rgba(40, 167, 69, 0.3);
-        }
-
-        .script-modal-button.discord {
-            background: rgba(88, 101, 242, 0.2);
-            border: 1px solid rgba(88, 101, 242, 0.4);
-        }
-
-        .script-modal-button.discord:hover {
-            background: rgba(88, 101, 242, 0.3);
-        }
-
-        .script-modal-button.option {
-            background: rgba(179, 142, 93, 0.2);
-            border: 1px solid rgba(179, 142, 93, 0.4);
-        }
-
-        .script-modal-button.option:hover {
-            background: rgba(179, 142, 93, 0.3);
-        }
-
-        .script-code {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 15px 0;
-            text-align: left;
-            font-family: monospace;
-            font-size: 0.9rem;
-            overflow-x: auto;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            max-height: 150px;
-            overflow-y: auto;
-        }
-
-        .copy-success {
-            color: #28a745;
-            margin-top: 10px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .copy-success.show {
-            opacity: 1;
-        }
-
-        .back-button {
-            background: rgba(60, 20, 20, 0.6);
-            color: #e0e0e0;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-top: 15px;
-            border: 1px solid rgba(100, 40, 40, 0.3);
-        }
-
-        .back-button:hover {
-            background: rgba(80, 30, 30, 0.6);
-            transform: translateY(-2px);
-        }
-
-        .changelogs-container {
-            text-align: center;
-        }
-
-        .changelog-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-top: 20px;
-        }
-
-        .changelog-item {
-            background: rgba(30, 10, 10, 0.3);
-            border-radius: 15px;
-            padding: 20px;
-            text-align: left;
-            border: 1px solid rgba(70, 30, 30, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        .changelog-item:hover {
-            background: rgba(35, 15, 15, 0.4);
-            transform: translateX(5px);
-        }
-
-        .changelog-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .changelog-type {
-            font-size: 0.9rem;
-            padding: 6px 12px;
-            border-radius: 15px;
-            font-weight: bold;
-        }
-
-        .changelog-type.added {
-            background: rgba(40, 167, 69, 0.3);
-            color: #6bff8d;
-            border: 1px solid rgba(40, 167, 69, 0.5);
-        }
-
-        .changelog-type.removed {
-            background: rgba(220, 53, 69, 0.3);
-            color: #ff6b7a;
-            border: 1px solid rgba(220, 53, 69, 0.5);
-        }
-
-        .changelog-type.fixed {
-            background: rgba(255, 193, 7, 0.3);
-            color: #ffd966;
-            border: 1px solid rgba(255, 193, 7, 0.5);
-        }
-
-        .changelog-type.coming {
-            background: rgba(108, 117, 125, 0.3);
-            color: #b8c2cc;
-            border: 1px solid rgba(108, 117, 125, 0.5);
-        }
-
-        .changelog-description {
-            font-size: 1rem;
-            line-height: 1.5;
-            color: #e0e0e0;
-        }
-
-        .changelog-details {
-            margin-top: 10px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            font-size: 0.9rem;
-            color: #c0c0c0;
-        }
-
-        .legend {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            justify-content: center;
-            margin-bottom: 30px;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
-        }
-
-        .legend-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-        }
-
-        .legend-added {
-            background: #6bff8d;
-        }
-
-        .legend-removed {
-            background: #ff6b7a;
-        }
-
-        .legend-fixed {
-            background: #ffd966;
-        }
-
-        .legend-coming {
-            background: #b8c2cc;
-        }
-        
-        .changelog-date {
-            font-size: 0.9rem;
-            color: #b38e5d;
-            opacity: 0.8;
-        }
-        
-        .api-status-info {
-            background: rgba(88, 101, 242, 0.1);
-            border: 2px solid rgba(88, 101, 242, 0.4);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 20px 0;
-            text-align: center;
-            font-size: 0.9rem;
-        }
-        
-        .api-status-info h3 {
-            color: #8a9eff;
-            margin-bottom: 10px;
-            display: flex;
-                align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .last-update {
-            font-size: 0.8rem;
-            opacity: 0.7;
-            margin-top: 10px;
-            color: #b0b0b0;
-        }
-        
-        .horizontal-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            justify-content: center;
-            margin-top: 20px;
-        }
-        
-        .full-width-row {
-            grid-column: 1 / -1;
-            background: rgba(179, 142, 93, 0.1);
-            border: 1px solid rgba(179, 142, 93, 0.3);
-        }
-        
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        
-        .info-card {
-            background: rgba(25, 10, 20, 0.3);
-            border-radius: 10px;
-            padding: 15px;
-            border: 1px solid rgba(70, 30, 60, 0.2);
-        }
-        
-        .info-card-title {
-            color: #b38e5d;
-            font-size: 1rem;
-            margin-bottom: 10px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .info-card-content {
-            font-size: 0.9rem;
-            line-height: 1.4;
-        }
-        
-        .features-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        
-        .feature-tag {
-            background: rgba(179, 142, 93, 0.2);
-            color: #e0e0e0;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 0.8rem;
-        }
     </style>
 </head>
-<body>
-    <canvas id="animated-bg"></canvas>
-    <div class="glow-effect"></div>
-    <div class="grid-effect"></div>
+<body class="bg-gray-900 text-green-500 h-screen flex flex-col items-center justify-center transition-all duration-100">
 
-    <div class="technical-issues">
-        <div class="issues-icon">🔧</div>
-        <h1 class="issues-title">Technical Issues</h1>
-        <p class="issues-text">The website is currently undergoing maintenance. We are working to improve your experience and will be back soon.</p>
-        <div class="issues-text">The website will be available again shortly. Thank you for your understanding.</div>
+    <!-- Main Container -->
+    <div id="main-container" class="bg-gray-800 p-8 rounded-lg shadow-2xl border-2 border-green-600 max-w-md w-full text-center relative z-10">
+        <h1 class="pixel-font text-2xl mb-2 text-green-400">SUPER HACKER 3000</h1>
+        <p class="text-xs text-gray-400 mb-6">v.2.4.1 (Unlocked) - Updated 2028</p>
+
+        <!-- Product Image Placeholder -->
+        <div class="w-full h-32 bg-black border border-green-800 mb-6 flex items-center justify-center overflow-hidden relative">
+            <div class="absolute inset-0 opacity-20 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')]"></div>
+            <span class="text-4xl">💀</span>
+        </div>
+
+        <div id="download-section">
+            <button id="download-btn" class="w-full bg-green-600 hover:bg-green-500 text-black font-bold py-4 px-4 rounded border-b-4 border-green-800 active:border-green-600 active:translate-y-1 transition-all uppercase text-sm animate-pulse">
+                Download New Executer UD 2028 No Dct No Virus Free!!
+            </button>
+            <p class="text-[10px] text-gray-500 mt-2">By clicking download you agree to forfeit your soul.</p>
+        </div>
+
+        <!-- Progress Section (Hidden initially) -->
+        <div id="progress-section" class="hidden mt-4">
+            <div class="text-left text-xs mb-1">Downloading resources...</div>
+            <div class="w-full bg-gray-700 h-6 border border-gray-600 p-0.5">
+                <div id="progress-bar" class="bg-green-500 h-full w-0 transition-all duration-75"></div>
+            </div>
+            <div id="progress-text" class="text-right text-xs mt-1">0%</div>
+        </div>
     </div>
 
-    <div class="main-content">
-        <div class="container">
-            <img src="1760377122964.png" alt="CPS Network Logo" class="logo">
-            
-            <div class="header">
-                <h1>💸 CPS Network</h1>
-                <p class="subtitle">Premium Services & Community</p>
-                
-                <div class="tabs">
-                    <button class="tab-button active" data-tab="premium">Premium</button>
-                    <button class="tab-button" data-tab="discord">Discord Info</button>
-                    <button class="tab-button" data-tab="scripts">Script List</button>
-                    <button class="tab-button" data-tab="executers">Supported Executers</button>
-                    <button class="tab-button" data-tab="changelogs">Changelogs</button>
-                </div>
-            </div>
-
-            <div class="tab-content active" id="premium-tab">
-                <div class="service">
-                    <h2 class="service-title">🪓 99 NIGHTS HUB & DIAMONDS/DAYS FARM</h2>
-                    
-                    <div class="plan">
-                        <div class="plan-header">
-                            <span class="plan-name">👑 Lifetime Plan</span>
-                        </div>
-                        <div class="price">💲 950 Robux</div>
-                    </div>
-                    
-                    <div class="plan">
-                        <div class="plan-header">
-                            <span class="plan-name">✨ Monthly Plan</span>
-                        </div>
-                        <div class="price">💲 550 Robux</div>
-                        <div class="features">
-                            <div class="feature">💎 2 Server Boosts</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="service">
-                    <h2 class="service-title">⚽ TOUCH FOOTBALL KEYLESS</h2>
-                    
-                    <div class="plan">
-                        <div class="plan-header">
-                            <span class="plan-name">👑 Lifetime Plan</span>
-                        </div>
-                        <div class="price">💲 1450 Robux</div>
-                        <div class="price">💸 $13.99 PayPal</div>
-                    </div>
-                    
-                    <div class="plan">
-                        <div class="plan-header">
-                            <span class="plan-name">✨ Monthly Plan</span>
-                        </div>
-                        <div class="price">💲 550 Robux</div>
-                        <div class="price">💸 $4.99 PayPal</div>
-                        <div class="features">
-                            <div class="feature">💎 2 Server Boosts</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="premium-perks">
-                    <h2 class="perks-title">✨ Premium Perks</h2>
-                    <div class="perks-grid">
-                        <div class="perk-card">
-                            <div class="perk-icon">🪓</div>
-                            <div class="perk-name">99 Nights Hub Gui</div>
-                            <div class="perk-features">
-                                <div class="perk-feature">✅ Keyless</div>
-                                <div class="perk-feature">✅ Priority Support</div>
-                            </div>
-                        </div>
-                        
-                        <div class="perk-card">
-                            <div class="perk-icon">💎</div>
-                            <div class="perk-name">Diamonds & Days Farm</div>
-                            <div class="perk-features">
-                                <div class="perk-feature">✅ Keyless</div>
-                                <div class="perk-feature">✅ Priority Support</div>
-                            </div>
-                        </div>
-                        
-                        <div class="perk-card">
-                            <div class="perk-icon">⚽</div>
-                            <div class="perk-name">Touch Football</div>
-                            <div class="perk-features">
-                                <div class="perk-feature">✅ Keyless</div>
-                                <div class="perk-feature">✅ Priority Support</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="notes-container">
-                    <div class="note-row">
-                        <div class="warning">⚠️ All robux payments are done "tax covered"!</div>
-                        <div class="warning">ℹ️ No refunds.</div>
-                        <div class="purchase-info">💸 Open A Ticket To Purchase In Discord Server</div>
-                        <a href="https://discord.gg/uCq6dNAfRV" class="main-server-button" target="_blank">
-                            🏠 Main Server
-                        </a>
-                        <a href="https://discord.gg/FhK8UGTtU8" class="support-button" target="_blank">
-                            🛠️ Support Server
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="discord-tab">
-                <div class="discord-container">
-                    <div class="discord-widget">
-                        <div class="discord-icon">🎮</div>
-                        <h2 class="discord-title">Join Our Discord Community</h2>
-                        <p class="discord-description">
-                            Connect with our growing community of gamers, get support for our products, 
-                            stay updated with the latest news, and participate in exclusive events!
-                        </p>
-                        
-                        <div class="button-group">
-                            <a href="https://discord.gg/uCq6dNAfRV" class="discord-button" target="_blank">
-                                Join Discord Server
-                            </a>
-                            <a href="https://discord.gg/FhK8UGTtU8" class="support-server-button" target="_blank">
-                                🛠️ Support Server
-                            </a>
-                        </div>
-                    </div>
-                    
-                    <div class="discord-features">
-                        <div class="feature-card">
-                            <div class="feature-icon">💬</div>
-                            <h3>Active Community</h3>
-                            <p>Chat with other members and share your experiences</p>
-                        </div>
-                        <div class="feature-card">
-                            <div class="feature-icon">🛠️</div>
-                            <h3>Quick Support</h3>
-                            <p>Get help with any issues or questions you might have</p>
-                        </div>
-                        <div class="feature-card">
-                            <div class="feature-icon">🚀</div>
-                            <h3>Latest Updates</h3>
-                            <p>Be the first to know about new features and products</p>
-                        </div>
-                        <div class="feature-card">
-                            <div class="feature-icon">🎯</div>
-                            <h3>Exclusive Content</h3>
-                            <p>Access special channels and content for members</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="scripts-tab">
-                <div class="scripts-container">
-                    <h2 class="service-title">📜 Available Scripts</h2>
-                    <p style="margin-bottom: 30px; opacity: 0.8; color: #c0c0c0;">Click on any script to get options</p>
-                    
-                    <div class="script-grid">
-                        <div class="script-button" onclick="showScriptModal('Universal Gui')">
-                            <div class="script-icon">🌐</div>
-                            <div class="script-name">Universal GUI Script</div>
-                        </div>
-                        
-                        <div class="script-button" onclick="showScriptModal('Touch Football Script')">
-                            <div class="script-icon">⚽</div>
-                            <div class="script-name">Touch Football Script</div>
-                        </div>
-                        
-                        <div class="script-button" onclick="showScriptModal('PVB Script')">
-                            <div class="script-icon">🛡️</div>
-                            <div class="script-name">PVB Script</div>
-                        </div>
-                        
-                        <div class="script-button" onclick="show99NightsModal()">
-                            <div class="script-icon">🌙</div>
-                            <div class="script-name">99 Nights Script</div>
-                        </div>
-                        
-                        <div class="script-button" onclick="showTSBModal()">
-                            <div class="script-icon">🏈</div>
-                            <div class="script-name">TSB Script</div>
-                        </div>
-                        
-                        <div class="script-button" onclick="showScriptModal('Dead Rails Script')">
-                            <div class="script-icon">🚂</div>
-                            <div class="script-name">Dead Rails Script</div>
-                        </div>
-                    </div>
-
-                    <div class="script-warning">
-                        <h3>⚠️ Important Notice</h3>
-                        <p>This list is NOT automatically updated and may not include newly added scripts. 
-                        Always check the Discord server for the most current script list and updates.</p>
-                    </div>
-
-                    <div class="script-support">
-                        <h3 style="margin-bottom: 15px; color: #b38e5d;">🐛 Found a bug or script not working?</h3>
-                        <p style="margin-bottom: 20px; opacity: 0.8; color: #c0c0c0;">Open a ticket on our support server and our team will help you!</p>
-                        <a href="https://discord.gg/FhK8UGTtU8" class="support-server-button" target="_blank">
-                            🛠️ Open Support Ticket
-                        </a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="executers-tab">
-                <div class="executers-container">
-                    <h2 class="service-title">⚙️ Supported Executers</h2>
-                    <p style="margin-bottom: 30px; opacity: 0.8; color: #c0c0c0;">Click on any executor to get complete information</p>
-                    
-                    <div class="api-status-info">
-                        <h3>🌐 API Status Information</h3>
-                        <p>All information is loaded automatically from <strong>weao.xyz API</strong> in real-time.</p>
-                        <div class="last-update" id="lastUpdate">Last update: Loading...</div>
-                    </div>
-                    
-                    <div class="platform-tabs">
-                        <button class="platform-tab active" data-platform="pc">💻 PC</button>
-                        <button class="platform-tab" data-platform="mac">🍎 Mac</button>
-                        <button class="platform-tab" data-platform="android">📱 Android</button>
-                        <button class="platform-tab" data-platform="ios">📱 iOS</button>
-                    </div>
-                    
-                    <div class="platform-content active" id="pc-content">
-                        <h3 style="margin-bottom: 20px; color: #b38e5d;">PC Executers</h3>
-                        <div class="executers-grid">
-                            <div class="executer-card" onclick="showExecuterInfo('Volcano')">
-                                <div class="executer-icon">🌋</div>
-                                <div class="executer-name">Volcano</div>
-                                <div class="executer-price" id="price-Volcano">Loading...</div>
-                                <div class="status-container" id="status-Volcano"></div>
-                                <div class="executer-website" id="website-Volcano">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Velocity')">
-                                <div class="executer-icon">⚡</div>
-                                <div class="executer-name">Velocity</div>
-                                <div class="executer-price" id="price-Velocity">Loading...</div>
-                                <div class="status-container" id="status-Velocity"></div>
-                                <div class="executer-website" id="website-Velocity">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Wave')">
-                                <div class="executer-icon">🌊</div>
-                                <div class="executer-name">Wave</div>
-                                <div class="executer-price" id="price-Wave">Loading...</div>
-                                <div class="status-container" id="status-Wave"></div>
-                                <div class="executer-website" id="website-Wave">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Seliware')">
-                                <div class="executer-icon">🛡️</div>
-                                <div class="executer-name">Seliware</div>
-                                <div class="executer-price" id="price-Seliware">Loading...</div>
-                                <div class="status-container" id="status-Seliware"></div>
-                                <div class="executer-website" id="website-Seliware">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Swift')">
-                                <div class="executer-icon">💨</div>
-                                <div class="executer-name">Swift</div>
-                                <div class="executer-price" id="price-Swift">Loading...</div>
-                                <div class="status-container" id="status-Swift"></div>
-                                <div class="executer-website" id="website-Swift">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Valex')">
-                                <div class="executer-icon">🔮</div>
-                                <div class="executer-name">Valex</div>
-                                <div class="executer-price" id="price-Valex">Loading...</div>
-                                <div class="status-container" id="status-Valex"></div>
-                                <div class="executer-website" id="website-Valex">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Potassium')">
-                                <div class="executer-icon">🥔</div>
-                                <div class="executer-name">Potassium</div>
-                                <div class="executer-price" id="price-Potassium">Loading...</div>
-                                <div class="status-container" id="status-Potassium"></div>
-                                <div class="executer-website" id="website-Potassium">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Bunni.lol')">
-                                <div class="executer-icon">🐰</div>
-                                <div class="executer-name">Bunni.lol</div>
-                                <div class="executer-price" id="price-Bunni.lol">Loading...</div>
-                                <div class="status-container" id="status-Bunni.lol"></div>
-                                <div class="executer-website" id="website-Bunni.lol">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Sirhurt')">
-                                <div class="executer-icon">👑</div>
-                                <div class="executer-name">Sirhurt</div>
-                                <div class="executer-price" id="price-Sirhurt">Loading...</div>
-                                <div class="status-container" id="status-Sirhurt"></div>
-                                <div class="executer-website" id="website-Sirhurt">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('ChocoSploit')">
-                                <div class="executer-icon">🍫</div>
-                                <div class="executer-name">ChocoSploit</div>
-                                <div class="executer-price" id="price-ChocoSploit">Loading...</div>
-                                <div class="status-container" id="status-ChocoSploit"></div>
-                                <div class="executer-website" id="website-ChocoSploit">Loading...</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="platform-content" id="mac-content">
-                        <h3 style="margin-bottom: 20px; color: #b38e5d;">Mac Executers</h3>
-                        <div class="executers-grid">
-                            <div class="executer-card" onclick="showExecuterInfo('Hydrogen')">
-                                <div class="executer-icon">💧</div>
-                                <div class="executer-name">Hydrogen</div>
-                                <div class="executer-price" id="price-Hydrogen">Loading...</div>
-                                <div class="status-container" id="status-Hydrogen"></div>
-                                <div class="executer-website" id="website-Hydrogen">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Macsploit')">
-                                <div class="executer-icon">🍎</div>
-                                <div class="executer-name">Macsploit</div>
-                                <div class="executer-price" id="price-Macsploit">Loading...</div>
-                                <div class="status-container" id="status-Macsploit"></div>
-                                <div class="executer-website" id="website-Macsploit">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Cryptic')">
-                                <div class="executer-icon">🔐</div>
-                                <div class="executer-name">Cryptic</div>
-                                <div class="executer-price" id="price-Cryptic">Loading...</div>
-                                <div class="status-container" id="status-Cryptic"></div>
-                                <div class="executer-website" id="website-Cryptic">Loading...</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="platform-content" id="android-content">
-                        <h3 style="margin-bottom: 20px; color: #b38e5d;">Android Executers</h3>
-                        <div class="executers-grid">
-                            <div class="executer-card" onclick="showExecuterInfo('Codex')">
-                                <div class="executer-icon">📜</div>
-                                <div class="executer-name">Codex</div>
-                                <div class="executer-price" id="price-Codex">Loading...</div>
-                                <div class="status-container" id="status-Codex"></div>
-                                <div class="executer-website" id="website-Codex">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Cryptic-Android')">
-                                <div class="executer-icon">🔐</div>
-                                <div class="executer-name">Cryptic</div>
-                                <div class="executer-price" id="price-Cryptic-Android">Loading...</div>
-                                <div class="status-container" id="status-Cryptic-Android"></div>
-                                <div class="executer-website" id="website-Cryptic-Android">Loading...</div>
-                            </div>
-                            <div class="executer-card" onclick="showExecuterInfo('Delta')">
-                                <div class="executer-icon">Δ</div>
-                                <div class="executer-name">Delta</div>
-                                <div class="executer-price" id="price-Delta">Loading...</div>
-                                <div class="status-container" id="status-Delta"></div>
-                                <div class="executer-website" id="website-Delta">Loading...</div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="platform-content" id="ios-content">
-                        <h3 style="margin-bottom: 20px; color: #b38e5d;">iOS Executers</h3>
-                        <div class="executers-grid">
-                            <div class="executer-card" onclick="showExecuterInfo('Delta-iOS')">
-                                <div class="executer-icon">Δ</div>
-                                <div class="executer-name">Delta</div>
-                                <div class="executer-price" id="price-Delta-iOS">Loading...</div>
-                                <div class="status-container" id="status-Delta-iOS"></div>
-                                <div class="executer-website" id="website-Delta-iOS">Loading...</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-content" id="changelogs-tab">
-                <div class="changelogs-container">
-                    <h2 class="service-title">📃 Changelogs</h2>
-                    <p style="margin-bottom: 30px; opacity: 0.8; color: #c0c0c0;">CPS Network website change history</p>
-                    
-                    <div class="legend">
-                        <div class="legend-item">
-                            <div class="legend-color legend-added"></div>
-                            <span>Added - New features or content added</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color legend-removed"></div>
-                            <span>Removed - Features or content removed</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color legend-fixed"></div>
-                            <span>Fixed - Bugs or issues resolved</span>
-                        </div>
-                        <div class="legend-item">
-                            <div class="legend-color legend-coming"></div>
-                            <span>Coming - Upcoming features or changes</span>
-                        </div>
-                    </div>
-                    
-                    <div class="changelog-list">
-                        <div class="changelog-item">
-                            <div class="changelog-header">
-                                <div class="changelog-type added">ADDED</div>
-                            </div>
-                            <div class="changelog-description">
-                                Added real-time injector status system with weao.xyz API integration
-                            </div>
-                            <div class="changelog-details">
-                                Statuses are now loaded automatically from weao.xyz API.
-                            </div>
-                        </div>
-                        
-                        <div class="changelog-item">
-                            <div class="changelog-header">
-                                <div class="changelog-type added">ADDED</div>
-                            </div>
-                            <div class="changelog-description">
-                                Added new Dead Rails Script to the script list
-                            </div>
-                            <div class="changelog-details">
-                                Added Dead Rails Script to the script list.
-                            </div>
-                        </div>
-                        
-                        <div class="changelog-item">
-                            <div class="changelog-header">
-                                <div class="changelog-type added">ADDED</div>
-                            </div>
-                            <div class="changelog-description">
-                                Added new injector Cryptic to the list of supported executors for Mac
-                            </div>
-                            <div class="changelog-details">
-                                Added Cryptic injector to the Mac executors list.
-                            </div>
-                        </div>
-                        
-                        <div class="changelog-item">
-                            <div class="changelog-header">
-                                <div class="changelog-type added">ADDED</div>
-                            </div>
-                            <div class="changelog-description">
-                                Added new injector ChocoSploit to the list of supported executors
-                            </div>
-                            <div class="changelog-details">
-                                Added ChocoSploit injector to the PC executors list.
-                            </div>
-                        </div>
-                        
-                        <div class="changelog-item">
-                            <div class="changelog-header">
-                                <div class="changelog-type removed">REMOVED</div>
-                            </div>
-                            <div class="changelog-description">
-                                Removed Zenith from the list of supported executors
-                            </div>
-                            <div class="changelog-details">
-                                Zenith no longer works and has been removed from all executor lists.
-                            </div>
-                        </div>
-                        
-                        <div class="changelog-item">
-                            <div class="changelog-header">
-                                <div class="changelog-type added">ADDED</div>
-                            </div>
-                            <div class="changelog-description">
-                                Added CPS Network website
-                            </div>
-                            <div class="changelog-details">
-                                Initial website design added with Premium, Discord Info, Script List and Supported Executers tabs.
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div id="executerModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeExecuterModal()">&times;</span>
-                <h2 class="modal-title" id="executerModalTitle">Complete Information</h2>
-                <div id="executerModalContent">
-                </div>
-            </div>
-        </div>
-        
-        <div id="scriptModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeScriptModal()">&times;</span>
-                <h2 class="modal-title" id="scriptModalTitle">Script Options</h2>
-                <div id="scriptModalContent">
-                </div>
-            </div>
-        </div>
-
-        <div id="tsbModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeTSBModal()">&times;</span>
-                <h2 class="modal-title">Select TSB Script</h2>
-                <div class="script-modal-buttons">
-                    <button class="script-modal-button option" onclick="selectTSBScript('Auto Block')">
-                        🛡️ TSB Auto Block
-                    </button>
-                    <button class="script-modal-button option" onclick="selectTSBScript('Auto Techs')">
-                        🤖 TSB Auto Techs
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <div id="nightsModal" class="modal">
-            <div class="modal-content">
-                <span class="close-button" onclick="closeNightsModal()">&times;</span>
-                <h2 class="modal-title">Select 99 Nights Script</h2>
-                <div class="script-modal-buttons">
-                    <button class="script-modal-button option" onclick="selectNightsScript('Hub')">
-                        🌙 99 Nights Hub
-                    </button>
-                    <button class="script-modal-button option" onclick="selectNightsScript('AutoFarm')">
-                        💎 99 Nights AutoFarm
-                    </button>
-                </div>
-            </div>
-        </div>
+    <!-- Chaos Overlay Elements -->
+    <div id="boy-67-text" class="boy-67 pixel-font text-center leading-none glitch-text" data-text="BOY 67">
+        BOY<br>67
+    </div>
+    <div id="chaos-layer" class="fixed inset-0 pointer-events-none z-0 hidden">
+        <!-- Random elements will be injected here -->
     </div>
 
     <script>
-    const allowedInjectors = [
-        "Volcano", "Velocity", "Wave", "Seliware", "Swift", "Valex",
-        "Potassium", "Bunni.lol", "Sirhurt", "Hydrogen", "Macsploit",
-        "Codex", "Cryptic", "Cryptic-Android", "Delta", "Delta-iOS",
-        "ChocoSploit"
-    ];
+        const downloadBtn = document.getElementById('download-btn');
+        const downloadSection = document.getElementById('download-section');
+        const progressSection = document.getElementById('progress-section');
+        const progressBar = document.getElementById('progress-bar');
+        const progressText = document.getElementById('progress-text');
+        const mainContainer = document.getElementById('main-container');
+        const boyText = document.getElementById('boy-67-text');
+        const body = document.body;
 
-    const manualDetectStatuses = {
-        "Volcano": "Undetected",
-        "Velocity": "Undetected",
-        "Wave": "Undetected",
-        "Seliware": "Undetected",
-        "Swift": "Detected",
-        "Valex": "Detected",
-        "Potassium": "Undetected",
-        "Bunni.lol": "Undetected",
-        "Sirhurt": "Undetected",
-        "Hydrogen": "Undetected",
-        "Macsploit": "Undetected",
-        "Codex": "Detected",
-        "Cryptic": "Undetected",
-        "Cryptic-Android": "Undetected",
-        "Delta": "Undetected",
-        "Delta-iOS": "Undetected",
-        "ChocoSploit": "Undetected"
-    };
+        const popups = [
+            "CRITICAL ERROR",
+            "SYSTEM32 DELETED",
+            "TROJAN DETECTED",
+            "SENDING DATA TO CHINA",
+            "CREDIT CARD STOLEN",
+            "MEMZ.EXE RUNNING",
+            "YOU CANNOT ESCAPE",
+            "DOWNLOADING VIRUS...",
+            "MINING BITCOIN..."
+        ];
 
-    const API_URL = "https://weao-proxy-api.vercel.app/api/status/exploits";
+        let progress = 0;
+        let isChaos = false;
 
-    let UpdateStatus = {};
-    let DetectStatus = {};
-    let exploitsFullData = {};
-
-    async function fetchStatusesFromAPI() {
-        try {
-            const response = await fetch(API_URL, {
-                method: "GET",
-                mode: "cors",
-                headers: {
-                    Accept: "application/json"
-                }
-            });
-
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            processAPIStatuses(data);
-
-            const lastUpdateElement = document.getElementById("lastUpdate");
-            const now = new Date();
-            lastUpdateElement.textContent = `Last update: ${now.toLocaleTimeString()}`;
-            lastUpdateElement.style.color = "";
-        } catch (error) {
-            console.error("Error loading statuses:", error);
-            setDefaultStatuses();
-            const lastUpdateElement = document.getElementById("lastUpdate");
-            lastUpdateElement.textContent = `Last update: Failed to load - ${new Date().toLocaleTimeString()}`;
-            lastUpdateElement.style.color = "#ff6b7a";
-        }
-    }
-
-    function processAPIStatuses(apiData) {
-        UpdateStatus = {};
-        DetectStatus = {};
-        exploitsFullData = {};
-
-        const handleItem = (item) => {
-            if (!item || !item.title) return;
-
-            let injectorName = item.name || item.injector || item.title;
-
-            if (injectorName === "Delta") {
-                if (item.platform === "iOS") {
-                    injectorName = "Delta-iOS";
-                } else if (item.platform === "Android") {
-                    injectorName = "Delta";
-                }
-            }
-
-            if (injectorName === "Cryptic" && item.platform === "Android") {
-                injectorName = "Cryptic-Android";
-            }
-
-            if (!allowedInjectors.includes(injectorName)) return;
-
-            exploitsFullData[injectorName] = item;
-
-            const updateRaw = item.updateStatus;
-
-            if (typeof updateRaw === "boolean") {
-                UpdateStatus[injectorName] = updateRaw ? "Updated" : "Not Updated";
-            } else if (typeof item.status === "string") {
-                UpdateStatus[injectorName] = item.status;
-            } else {
-                UpdateStatus[injectorName] = "Unknown";
-            }
-
-            DetectStatus[injectorName] = manualDetectStatuses[injectorName] || "Unknown";
+        downloadBtn.addEventListener('click', () => {
+            // Setup UI
+            downloadBtn.disabled = true;
+            downloadBtn.classList.remove('animate-pulse');
+            downloadBtn.textContent = "Connecting to server...";
             
-            updateInjectorCard(injectorName);
-        };
-
-        if (Array.isArray(apiData)) {
-            apiData.forEach(handleItem);
-        } else if (apiData && typeof apiData === "object") {
-            Object.values(apiData).forEach(handleItem);
-        }
-
-        allowedInjectors.forEach((injectorName) => {
-            if (!UpdateStatus[injectorName]) {
-                UpdateStatus[injectorName] = "Unknown";
-            }
-            if (!DetectStatus[injectorName]) {
-                DetectStatus[injectorName] = manualDetectStatuses[injectorName] || "Unknown";
-            }
-            if (!exploitsFullData[injectorName]) {
-                updateInjectorCard(injectorName);
-            }
-        });
-
-        initializeStatuses();
-    }
-
-    function updateInjectorCard(injectorName) {
-        const injectorData = exploitsFullData[injectorName];
-        
-        const priceElement = document.getElementById(`price-${injectorName}`);
-        const websiteElement = document.getElementById(`website-${injectorName}`);
-        
-        if (priceElement) {
-            if (injectorData && injectorData.cost) {
-                if (injectorData.free === true) {
-                    priceElement.textContent = '';
-                } else {
-                    priceElement.textContent = injectorData.cost;
-                }
-            } else if (injectorData && injectorData.free !== undefined) {
-                priceElement.textContent = injectorData.free ? '' : 'Paid';
-            } else {
-                priceElement.textContent = "Price not available";
-            }
-        }
-        
-        if (websiteElement) {
-            if (injectorData && injectorData.websitelink) {
-                websiteElement.textContent = injectorData.websitelink.replace("https://", "");
-            } else {
-                websiteElement.textContent = "Website not available";
-            }
-        }
-        
-        updateStatusDisplay(injectorName);
-    }
-
-    function setDefaultStatuses() {
-        allowedInjectors.forEach(injectorName => {
-            UpdateStatus[injectorName] = "Unknown";
-            DetectStatus[injectorName] = manualDetectStatuses[injectorName] || "Unknown";
-            updateInjectorCard(injectorName);
-        });
-        
-        initializeStatuses();
-    }
-
-    function updateStatusDisplay(injectorName) {
-        const statusContainer = document.getElementById(`status-${injectorName}`);
-        if (!statusContainer) return;
-
-        statusContainer.innerHTML = "";
-
-        const updateStatus = UpdateStatus[injectorName] || "Unknown";
-        const detectStatus = DetectStatus[injectorName] || "Unknown";
-
-        const updateIndicator = createStatusIndicator("update", updateStatus);
-        const detectIndicator = createStatusIndicator("detect", detectStatus);
-
-        statusContainer.appendChild(updateIndicator);
-        statusContainer.appendChild(detectIndicator);
-    }
-
-    function initializeStatuses() {
-        allowedInjectors.forEach(injectorName => {
-            updateStatusDisplay(injectorName);
-        });
-    }
-
-    function createStatusIndicator(type, status) {
-        const indicator = document.createElement("div");
-        indicator.className = "status-indicator";
-
-        if (type === "update") {
-            if (status === "Updated" || status === "updated") {
-                indicator.className = "status-indicator status-updated";
-                indicator.textContent = "Updated";
-            } else if (
-                status === "Not Updated" ||
-                status === "not_updated" ||
-                status === "not updated"
-            ) {
-                indicator.className = "status-indicator status-not-updated";
-                indicator.textContent = "Not Updated";
-            } else {
-                indicator.className = "status-indicator status-unknown-update";
-                indicator.textContent = status || "Unknown";
-            }
-        } else {
-            if (status === "Detected" || status === "detected") {
-                indicator.className = "status-indicator status-detected";
-                indicator.textContent = "Detected";
-            } else if (status === "Undetected" || status === "undetected") {
-                indicator.className = "status-indicator status-undetected";
-                indicator.textContent = "Undetected";
-            } else if (status === "Testing" || status === "testing") {
-                indicator.className = "status-indicator status-testing";
-                indicator.textContent = "Testing";
-            } else {
-                indicator.className = "status-indicator status-unknown-update";
-                indicator.textContent = status || "Unknown";
-            }
-        }
-
-        return indicator;
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-        fetchStatusesFromAPI();
-        setInterval(fetchStatusesFromAPI, 5 * 60 * 1000);
-
-        resizeCanvas();
-        animateParticles();
-        createFloatingParticles();
-        checkTechnicalIssues();
-        handleScrollAnimations();
-    });
-
-    const canvas = document.getElementById("animated-bg");
-    const ctx = canvas.getContext("2d");
-    let particles = [];
-    let mouse = { x: null, y: null, radius: 150 };
-
-    let hideInjectorStatuses = false;
-    let technicalIssues = false;
-
-    const scriptData = {
-        "Universal Gui": {
-            code: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Rx1m/CpsHub/refs/heads/main/CPSNetwork",true))()',
-            discordLink: "https://discord.gg/uCq6dNAfRV"
-        },
-        "Touch Football Script": {
-            code: 'loadstring(game:HttpGet("https://gist.githubusercontent.com/aquzeh/8e317c91305a2311bb9931c2b79c15b2/raw/cpstfb"))()',
-            discordLink: "https://discord.gg/uCq6dNAfRV"
-        },
-        "PVB Script": {
-            code: 'loadstring(game:HttpGet("https://gist.githubusercontent.com/aquzeh/86b881d600cd8f7fdd007469e4a45965/raw/pvb"))()',
-            discordLink: "https://discord.gg/uCq6dNAfRV"
-        },
-        "99 Nights Hub": {
-            code: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Rx1m/CpsHub/refs/heads/main/Hub",true))()',
-            discordLink: "https://discord.gg/uCq6dNAfRV"
-        },
-        "99 Nights AutoFarm": {
-            code: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/Rx1m/CpsHub/refs/heads/main/DayFarm%E2%84%A2",true))()',
-            discordLink: "https://discord.gg/uCq6dNAfRV"
-        },
-        "TSB Auto Block": {
-            code: 'loadstring(game:HttpGet("https://api.luarmor.net/files/v3/loaders/6f502e252308fb97855295005faa73a0.lua"))()',
-            discordLink: "https://discord.gg/uCq6dNAfRV"
-        },
-        "TSB Auto Techs": {
-            code: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/hellattexyss/autotechs/refs/heads/main/cpstechs.lua"))()',
-            discordLink: "https://discord.gg/uCq6dNAfRV"
-        },
-        "Dead Rails Script": {
-            code: 'loadstring(game:HttpGet("https://api.getpolsec.com/scripts/files/8296210a2f042b36145c0db05bd725f73dcf465e2cd54e02ee843c6578a40a91.lua"))()',
-            discordLink: "https://discord.gg/uCq6dNAfRV"
-        }
-    };
-
-    function resizeCanvas() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        initParticles();
-    }
-
-    function initParticles() {
-        particles = [];
-        const particleCount = Math.min(100, Math.floor((canvas.width * canvas.height) / 10000));
-
-        for (let i = 0; i < particleCount; i++) {
-            particles.push({
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                size: Math.random() * 3 + 1,
-                speedX: Math.random() * 1 - 0.5,
-                speedY = Math.random() * 1 - 0.5,
-                color: `rgba(${
-                    Math.random() > 0.5 ? "179, 142, 93" : "168, 107, 107"
-                }, ${Math.random() * 0.3 + 0.2})`
-            });
-        }
-    }
-
-    function animateParticles() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        particles.forEach(particle => {
-            particle.x += particle.speedX;
-            particle.y += particle.speedY;
-
-            if (particle.x > canvas.width || particle.x < 0) particle.speedX = -particle.speedX;
-            if (particle.y > canvas.height || particle.y < 0) particle.speedY = -particle.speedY;
-
-            ctx.beginPath();
-            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-            ctx.fillStyle = particle.color;
-            ctx.fill();
-
-            particles.forEach(otherParticle => {
-                const dx = particle.x - otherParticle.x;
-                const dy = particle.y - otherParticle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < 100) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(179, 142, 93, ${0.1 * (1 - distance / 100)})`;
-                    ctx.lineWidth = 0.5;
-                    ctx.moveTo(particle.x, particle.y);
-                    ctx.lineTo(otherParticle.x, otherParticle.y);
-                    ctx.stroke();
-                }
-            });
-
-            if (mouse.x !== null && mouse.y !== null) {
-                const dx = mouse.x - particle.x;
-                const dy = mouse.y - particle.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-
-                if (distance < mouse.radius) {
-                    const force = (mouse.radius - distance) / mouse.radius;
-                    const forceX = (dx / distance) * force * 10;
-                    const forceY = (dy / distance) * force * 10;
-
-                    particle.x -= forceX;
-                    particle.y -= forceY;
-                }
-            }
-        });
-
-        requestAnimationFrame(animateParticles);
-    }
-
-    window.addEventListener("mousemove", e => {
-        mouse.x = e.x;
-        mouse.y = e.y;
-    });
-
-    window.addEventListener("mouseout", () => {
-        mouse.x = null;
-        mouse.y = null;
-    });
-
-    window.addEventListener("resize", resizeCanvas);
-
-    function createFloatingParticles() {
-        const particleCount = 20;
-
-        for (let i = 0; i < particleCount; i++) {
-            const particle = document.createElement("div");
-            particle.className = "floating-particle";
-
-            const size = Math.random() * 3 + 1;
-            const startX = Math.random() * 100;
-            const duration = Math.random() * 20 + 10;
-            const delay = Math.random() * 5;
-
-            particle.style.width = `${size}px`;
-            particle.style.height = `${size}px`;
-            particle.style.left = `${startX}vw`;
-            particle.style.bottom = "0";
-            particle.style.opacity = Math.random() * 0.3 + 0.1;
-            particle.style.animationDuration = `${duration}s`;
-            particle.style.animationDelay = `${delay}s`;
-            particle.style.setProperty("--dx", (Math.random() * 2 - 1).toFixed(2));
-
-            const colors = [
-                "rgba(179, 142, 93, 0.3)",
-                "rgba(168, 107, 107, 0.3)",
-                "rgba(111, 66, 193, 0.2)",
-                "rgba(40, 167, 69, 0.2)"
-            ];
-            particle.style.background = colors[Math.floor(Math.random() * colors.length)];
-
-            document.body.appendChild(particle);
-
             setTimeout(() => {
-                particle.remove();
-            }, (duration + delay) * 1000);
-        }
-
-        setTimeout(createFloatingParticles, 2000);
-    }
-
-    function handleScrollAnimations() {
-        const elements = document.querySelectorAll(".slide-in");
-
-        elements.forEach(element => {
-            const elementTop = element.getBoundingClientRect().top;
-            const elementVisible = 150;
-
-            if (elementTop < window.innerHeight - elementVisible) {
-                element.classList.add("slide-in");
-            }
-        });
-    }
-
-    document
-        .querySelectorAll(".plan, .perk-card, .feature-card, .executer-card, .changelog-item")
-        .forEach(el => {
-            el.classList.add("slide-in");
+                downloadSection.classList.add('hidden');
+                progressSection.classList.remove('hidden');
+                startDownload();
+            }, 1000);
         });
 
-    window.addEventListener("scroll", handleScrollAnimations);
-    handleScrollAnimations();
+        function startDownload() {
+            const interval = setInterval(() => {
+                if (isChaos) return; // Stop logic if chaos started
 
-    function checkTechnicalIssues() {
-        if (technicalIssues) {
-            document.querySelector(".technical-issues").classList.add("active");
-            document.querySelector(".main-content").classList.add("hidden");
-        } else {
-            document.querySelector(".technical-issues").classList.remove("active");
-            document.querySelector(".main-content").classList.remove("hidden");
+                progress++;
+                updateProgressUI(progress);
+
+                // Simulate stalls
+                if (Math.random() > 0.8) {
+                    progress--; // Glitch back
+                }
+
+                if (progress >= 67) {
+                    clearInterval(interval);
+                    startChaos();
+                }
+            }, 80);
         }
-    }
 
-    function showScriptModal(scriptName) {
-        const modal = document.getElementById("scriptModal");
-        const modalTitle = document.getElementById("scriptModalTitle");
-        const modalContent = document.getElementById("scriptModalContent");
+        function updateProgressUI(val) {
+            progressBar.style.width = val + '%';
+            progressText.innerText = val + '%';
+        }
 
-        const scriptInfo = scriptData[scriptName];
-        if (!scriptInfo) return;
+        function startChaos() {
+            isChaos = true;
+            progressText.innerText = "67% ERROR 67% ERROR";
+            progressText.classList.add('text-red-500', 'font-bold');
+            progressBar.classList.remove('bg-green-500');
+            progressBar.classList.add('bg-red-600');
+            
+            // Visual changes
+            body.classList.add('shake-hard', 'flash-bg');
+            mainContainer.classList.add('hidden'); // Hide the clean UI
+            
+            // Show the Boy 67 text
+            boyText.style.display = "block";
+            boyText.classList.add('animate-ping');
+            
+            // Change title
+            document.title = "VIRUS DETECTED 67%";
 
-        modalTitle.textContent = `${scriptName} - Options`;
+            // Start spawning popups
+            const popupInterval = setInterval(createPopup, 150);
+            
+            // Play annoying beep sounds (simulated oscillator)
+            playChaosSound();
 
-        modalContent.innerHTML = `
-                <div class="script-modal-buttons">
-                    <button class="script-modal-button copy" onclick="copyScriptCode('${scriptName}')">
-                        📋 Get script now
-                    </button>
-                    <a href="${scriptInfo.discordLink}" class="script-modal-button discord" target="_blank">
-                        💬 Go to Discord
-                    </a>
+            // After 5 seconds of chaos, transition to "Thanks" screen
+            setTimeout(() => {
+                // Stop chaos loop
+                clearInterval(popupInterval);
+                isChaos = false; // Stops sound recursion
+
+                // Remove chaos classes from body
+                document.body.classList.remove('shake-hard', 'flash-bg');
+                document.body.style.backgroundColor = 'black'; // Ensure background is black
+                
+                // Clear the screen content completely and show message
+                document.body.innerHTML = `
+                    <div style="
+                        position: fixed; 
+                        top: 0; 
+                        left: 0; 
+                        width: 100%; 
+                        height: 100%; 
+                        background-color: black; 
+                        display: flex; 
+                        justify-content: center; 
+                        align-items: center; 
+                        z-index: 9999;
+                    ">
+                        <h1 style="
+                            color: white; 
+                            font-family: 'Press Start 2P', cursive; 
+                            font-size: 2rem; 
+                            text-align: center;
+                            line-height: 1.5;
+                            padding: 20px;
+                        ">
+                            Thanks You For Download!
+                        </h1>
+                    </div>
+                `;
+                
+                // Reset title
+                document.title = "Download Complete";
+            }, 5000);
+        }
+
+        function createPopup() {
+            const popup = document.createElement('div');
+            popup.className = 'virus-popup';
+            
+            const randomX = Math.random() * (window.innerWidth - 300);
+            const randomY = Math.random() * (window.innerHeight - 200);
+            
+            popup.style.left = randomX + 'px';
+            popup.style.top = randomY + 'px';
+
+            const msg = popups[Math.floor(Math.random() * popups.length)];
+
+            popup.innerHTML = `
+                <div class="popup-header">
+                    <span>ERROR 67</span>
+                    <span>X</span>
                 </div>
-                <div class="script-code">${scriptInfo.code}</div>
-                <div class="copy-success" id="copySuccessMessage">✅ Script copied to clipboard!</div>
+                <div class="popup-content">
+                    <div style="font-size:30px; color:red">❌</div>
+                    <div>${msg}</div>
+                    <button style="border:1px solid gray; padding:2px 10px; margin-top:5px">OK</button>
+                </div>
             `;
 
-        modal.style.display = "flex";
-        setTimeout(() => {
-            modal.classList.add("active");
-        }, 10);
-    }
+            document.body.appendChild(popup);
 
-    function showTSBModal() {
-        const modal = document.getElementById("tsbModal");
-
-        modal.style.display = "flex";
-        setTimeout(() => {
-            modal.classList.add("active");
-        }, 10);
-    }
-
-    function closeTSBModal() {
-        const modal = document.getElementById("tsbModal");
-
-        modal.classList.remove("active");
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 300);
-    }
-
-    function selectTSBScript(scriptType) {
-        closeTSBModal();
-
-        const fullScriptName = `TSB ${scriptType}`;
-        showScriptModal(fullScriptName);
-    }
-
-    function show99NightsModal() {
-        const modal = document.getElementById("nightsModal");
-
-        modal.style.display = "flex";
-        setTimeout(() => {
-            modal.classList.add("active");
-        }, 10);
-    }
-
-    function closeNightsModal() {
-        const modal = document.getElementById("nightsModal");
-
-        modal.classList.remove("active");
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 300);
-    }
-
-    function selectNightsScript(scriptType) {
-        closeNightsModal();
-
-        const fullScriptName = `99 Nights ${scriptType}`;
-        showScriptModal(fullScriptName);
-    }
-
-    function copyScriptCode(scriptName) {
-        const scriptCode = scriptData[scriptName].code;
-
-        navigator.clipboard
-            .writeText(scriptCode)
-            .then(() => {
-                const successMessage = document.getElementById("copySuccessMessage");
-                successMessage.classList.add("show");
-
-                setTimeout(() => {
-                    successMessage.classList.remove("show");
-                }, 3000);
-            })
-            .catch(err => {
-                console.error("Failed to copy script: ", err);
-                alert("Failed to copy script. Please copy manually.");
-            });
-    }
-
-    function closeScriptModal() {
-        const modal = document.getElementById("scriptModal");
-
-        modal.classList.remove("active");
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 300);
-
-        const successMessage = document.getElementById("copySuccessMessage");
-        if (successMessage) {
-            successMessage.classList.remove("show");
-        }
-    }
-
-    document.querySelectorAll(".tab-button").forEach(button => {
-        button.addEventListener("click", () => {
-            document.querySelectorAll(".tab-button").forEach(btn => btn.classList.remove("active"));
-            document.querySelectorAll(".tab-content").forEach(content => content.classList.remove("active"));
-
-            button.classList.add("active");
-
-            const tabId = button.getAttribute("data-tab") + "-tab";
-            document.getElementById(tabId).classList.add("active");
-        });
-    });
-
-    document.querySelectorAll(".platform-tab").forEach(button => {
-        button.addEventListener("click", () => {
-            document.querySelectorAll(".platform-tab").forEach(btn => btn.classList.remove("active"));
-            document
-                .querySelectorAll(".platform-content")
-                .forEach(content => content.classList.remove("active"));
-
-            button.classList.add("active");
-
-            const platformId = button.getAttribute("data-platform") + "-content";
-            document.getElementById(platformId).classList.add("active");
-        });
-    });
-
-    function showExecuterInfo(executerName) {
-        const modal = document.getElementById("executerModal");
-        const modalTitle = document.getElementById("executerModalTitle");
-        const modalContent = document.getElementById("executerModalContent");
-
-        modalTitle.textContent = `${executerName} - Complete Information`;
-
-        const injectorData = exploitsFullData[executerName];
-        const updateStatus = UpdateStatus[executerName] || "Unknown";
-        const detectStatus = DetectStatus[executerName] || "Unknown";
-
-        if (!injectorData) {
-            modalContent.innerHTML = `
-                <div style="text-align: center; padding: 40px;">
-                    <div style="font-size: 3rem; margin-bottom: 20px;">❌</div>
-                    <h3 style="color: #a86b6b; margin-bottom: 15px;">Data Not Available</h3>
-                    <p style="color: #c0c0c0; margin-bottom: 20px;">No API data available for ${executerName}.</p>
-                    <p style="color: #b0b0b0; font-size: 0.9rem;">Last update: ${new Date().toLocaleTimeString()}</p>
-                </div>`;
-            
-            modal.style.display = "flex";
-            setTimeout(() => {
-                modal.classList.add("active");
-            }, 10);
-            return;
+            // Don't let DOM get too heavy, remove old ones
+            if (document.querySelectorAll('.virus-popup').length > 50) {
+                document.querySelector('.virus-popup').remove();
+            }
         }
 
-        let modalHTML = `
-            <div class="info-grid">
-                <div class="info-card">
-                    <div class="info-card-title">📋 Basic Information</div>
-                    <div class="info-card-content">
-                        <div class="detail-row">
-                            <div class="detail-label">Name:</div>
-                            <div class="detail-value">${executerName}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Version:</div>
-                            <div class="detail-value">${injectorData.version || "Not available"}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Updated Date:</div>
-                            <div class="detail-value">${injectorData.updatedDate || "Not available"}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Roblox Version:</div>
-                            <div class="detail-value">${injectorData.rbxversion || "Not available"}</div>
-                        </div>
-                    </div>
-                </div>
+        function playChaosSound() {
+            // Simple Audio Context Oscillator
+            try {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                const audioCtx = new AudioContext();
 
-                <div class="info-card">
-                    <div class="info-card-title">💰 Pricing & Platform</div>
-                    <div class="info-card-content">
-                        <div class="detail-row">
-                            <div class="detail-label">Free:</div>
-                            <div class="detail-value">${injectorData.free !== undefined ? (injectorData.free ? 'Yes' : 'No') : "Not available"}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Price:</div>
-                            <div class="detail-value">
-                                ${injectorData.free === true ? 'Free' : (injectorData.cost || "Not available")}
-                            </div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Platform:</div>
-                            <div class="detail-value">${injectorData.platform || "Not available"}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Type:</div>
-                            <div class="detail-value">${getExecutorType(injectorData.extype) || "Not available"}</div>
-                        </div>
-                    </div>
-                </div>
+                function beep() {
+                    if (!isChaos) return;
+                    const oscillator = audioCtx.createOscillator();
+                    const gainNode = audioCtx.createGain();
 
-                <div class="info-card full-width-row">
-                    <div class="info-card-title">📊 Status Information</div>
-                    <div class="info-card-content">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px;">
-                            <div class="detail-row">
-                                <div class="detail-label">Update Status:</div>
-                                <div class="detail-value">${createStatusIndicator("update", updateStatus).outerHTML}</div>
-                            </div>
-                            ${detectStatus !== "Unknown" ? `
-                            <div class="detail-row">
-                                <div class="detail-label">Detection Status:</div>
-                                <div class="detail-value">${createStatusIndicator("detect", detectStatus).outerHTML}</div>
-                            </div>
-                            ` : ''}
-                        </div>
-                    </div>
-                </div>
+                    oscillator.type = 'sawtooth';
+                    oscillator.frequency.setValueAtTime(Math.random() * 1000 + 100, audioCtx.currentTime); // value in hertz
+                    
+                    gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
 
-                <div class="info-card">
-                    <div class="info-card-title">⚡ Performance</div>
-                    <div class="info-card-content">
-                        <div class="detail-row">
-                            <div class="detail-label">UNC Percentage:</div>
-                            <div class="detail-value">${injectorData.uncPercentage !== undefined ? injectorData.uncPercentage + '%' : "Not available"}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">sUNC Percentage:</div>
-                            <div class="detail-value">${injectorData.suncPercentage !== undefined ? injectorData.suncPercentage + '%' : "Not available"}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Beta:</div>
-                            <div class="detail-value">${injectorData.beta !== undefined ? (injectorData.beta ? 'Yes' : 'No') : "Not available"}</div>
-                        </div>
-                        <div class="detail-row">
-                            <div class="detail-label">Key System:</div>
-                            <div class="detail-value">
-                                ${injectorData.free === false ? 'Paid' : (injectorData.keysystem !== undefined ? (injectorData.keysystem ? 'Yes' : 'No') : "Not available")}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="info-card">
-                    <div class="info-card-title">✨ Features</div>
-                    <div class="info-card-content">
-                        <div class="features-list">
-                            ${injectorData.decompiler ? '<span class="feature-tag">Decompiler</span>' : ''}
-                            ${injectorData.multiInject ? '<span class="feature-tag">Multi-Inject</span>' : ''}
-                            ${injectorData.unlinked ? '<span class="feature-tag">Unlinked</span>' : ''}
-                            ${injectorData.recommended ? '<span class="feature-tag">Recommended</span>' : ''}
-                            ${(!injectorData.decompiler && !injectorData.multiInject && !injectorData.unlinked && !injectorData.recommended) ? 
-                               '<span class="feature-tag">No special features</span>' : ''}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="info-card full-width-row" style="margin-top: 20px;">
-                <div class="info-card-title">🔗 Links</div>
-                <div class="info-card-content">
-                    <div class="horizontal-links">
-                        ${injectorData.websitelink ? `<a href="${injectorData.websitelink}" class="website-link" target="_blank">🌐 Official Website</a>` : ''}
-                        ${injectorData.discordlink ? `<a href="${injectorData.discordlink}" class="website-link" target="_blank">💬 Discord</a>` : ''}
-                        ${injectorData.purchaselink ? `<a href="${injectorData.purchaselink}" class="website-link" target="_blank">🛒 Purchase</a>` : ''}
-                        ${(!injectorData.websitelink && !injectorData.discordlink && !injectorData.purchaselink) ? 
-                          '<span style="color: #b0b0b0;">No links available</span>' : ''}
-                    </div>
-                </div>
-            </div>
-
-            ${injectorData.slug && injectorData.slug.fullDescription ? `
-            <div class="info-card full-width-row" style="margin-top: 20px;">
-                <div class="info-card-title">📝 Description</div>
-                <div class="info-card-content">
-                    <p style="line-height: 1.6; color: #e0e0e0;">${injectorData.slug.fullDescription}</p>
-                </div>
-            </div>
-            ` : ''}
-
-            <div class="info-card full-width-row" style="margin-top: 20px; background: rgba(179, 142, 93, 0.1); border: 1px solid rgba(179, 142, 93, 0.3);">
-                <div class="info-card-title">🌐 API Information</div>
-                <div class="info-card-content">
-                    <p style="font-size: 0.9rem; opacity: 0.8; color: #c0c0c0;">
-                        All data is loaded from weao.xyz API in real-time. Detect status fields are excluded.
-                    </p>
-                    <p style="font-size: 0.8rem; opacity: 0.7; color: #b0b0b0; margin-top: 10px;">
-                        Last API update: ${new Date().toLocaleTimeString()}
-                    </p>
-                </div>
-            </div>`;
-
-        modalContent.innerHTML = modalHTML;
-
-        modal.style.display = "flex";
-        setTimeout(() => {
-            modal.classList.add("active");
-        }, 10);
-    }
-
-    function getExecutorType(extype) {
-        const typeMap = {
-            'wexecutor': 'Internal',
-            'wexternal': 'External', 
-            'aexecutor': 'Android',
-            'mexecutor': 'Mac',
-            'iexecutor': 'iOS',
-            'hidden': 'Hidden'
-        };
-        return typeMap[extype] || extype;
-    }
-
-    function closeExecuterModal() {
-        const modal = document.getElementById("executerModal");
-
-        modal.classList.remove("active");
-        setTimeout(() => {
-            modal.style.display = "none";
-        }, 300);
-    }
-
-    window.onclick = function (event) {
-        const executerModal = document.getElementById("executerModal");
-        const scriptModal = document.getElementById("scriptModal");
-        const tsbModal = document.getElementById("tsbModal");
-        const nightsModal = document.getElementById("nightsModal");
-
-        if (event.target === executerModal) {
-            closeExecuterModal();
+                    oscillator.start();
+                    setTimeout(() => oscillator.stop(), 100);
+                    
+                    setTimeout(beep, Math.random() * 200 + 50);
+                }
+                
+                beep();
+            } catch (e) {
+                console.log("Audio not supported or blocked");
+            }
         }
-
-        if (event.target === scriptModal) {
-            closeScriptModal();
-        }
-
-        if (event.target === tsbModal) {
-            closeTSBModal();
-        }
-
-        if (event.target === nightsModal) {
-            closeNightsModal();
-        }
-    };
     </script>
 </body>
 </html>
